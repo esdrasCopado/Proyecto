@@ -1,0 +1,17 @@
+services:
+ db_eventos:
+  image: mysql
+  restart: always
+
+  environment:
+   MYSQL_ROOT_PASSWORD: example_root
+   MYSQL_USER: admin
+   MYSQL_PASSWORD: password_example
+   MYSQL_DATABASE: eventos_db
+  ports:
+   - "3306:3306"
+  volumes:
+   - db_eventos:/var/lib/mysql
+
+volumes:
+ db_eventos:

@@ -1,0 +1,58 @@
+{
+  "name": "mi-proyecto-eventos",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de eventos",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "db:migrate": "npx prisma migrate dev",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio",
+    "db:seed": "ts-node scripts/seed.ts",
+    "db:reset": "npx prisma migrate reset",
+
+    
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:models": "jest tests/models",
+    "test:repositories": "jest tests/repositories",
+    "test:verbose": "jest --verbose",
+    "test:db": "ts-node scripts/testDatabase.ts",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "eventos",
+    "node",
+    "prisma",
+    "mysql"
+  ],
+  "author": "Equipo Eventos",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.15.1",
+    "prisma": "^6.16.2",
+    "typescript": "^5.9.2",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@mermaid-js/mermaid-cli": "^11.12.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.5.2",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "prisma-erd-generator": "^2.1.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.4",
+    "ts-node": "^10.9.2"
+  }
+}

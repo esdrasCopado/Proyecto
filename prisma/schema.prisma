@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+  theme    = "forest"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id Int @id @default(autoincrement())
+  email String
+  nombre String
+  apellidos String
+  telefono String
+  fechaRegistro DateTime @default(now()) @map("fecha_registro")
+
+  //relaciones
+  boletos Boleto[]
+  ordenes Orden[]
+
+  @@map("usuarios")
+
+}
+
+
+model Evento {
+  id Int @id @default(autoincrement())
+  nombre String
+  descipcion String? @db.Text
+  fecha DateTime
+  ubicacion String
+
+  //relaciones
+  boletos Boleto[]
+  artistas ArtistaEvento[]
+
+}
+
+model Boleto {
+  id Int @id @default(autoincrement())
+  precio Decimal
+  tipo String // VIP, General, etc
+  disponible Boolean
+  
+  // claves foraneas
+  eventoId Int @map("evento_id")
+  usuarioId Int? @map("usuario_id")
+
+  // relaciones
+  evento Evento @relation(fields: [eventoId], references: [id])
+  usuario Usuario? @relation(fields: [usuarioId], references: [id])
+}
+
+model Artista {
+  id Int @id @default(autoincrement())
+  nombre String
+  genero String
+  contacto String
+
+  // relaciones
+  eventos ArtistaEvento[]
+  @@map("artistas")
+}
+
+model ArtistaEvento {
+  id Int @id @default(autoincrement())
+  artistaId Int @map("artista_id")
+  eventoId Int @map("evento_id")
+
+  //relaciones
+  artista Artista @relation(fields: [artistaId], references: [id])
+  evento Evento @relation(fields: [eventoId], references: [id])
+
+  @@unique([artistaId, eventoId])
+  @@map("artista_evento")
+}
+
+model Orden {
+  id      Int      @id @default(autoincrement())
+  total   Decimal  @db.Decimal(10, 2)
+  fecha   DateTime @default(now())
+  estado  String   @default("pendiente")
+  
+  // Clave foránea
+  usuarioId Int    @map("usuario_id")
+  
+  // Relaciones
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  detalles  OrdenDetalle[]
+  
+  @@map("ordenes")
+}
+
+model OrdenDetalle {
+  id       Int     @id @default(autoincrement())
+  cantidad Int
+  precio   Decimal @db.Decimal(10, 2)
+  
+  // Claves foráneas
+  ordenId  Int     @map("orden_id")
+  itemId   Int     @map("item_id")
+  
+  // Relaciones
+  orden    Orden   @relation(fields: [ordenId], references: [id])
+  item     Item    @relation(fields: [itemId], references: [id])
+  
+  @@map("orden_detalles")
+}
+
+model Item {
+  id          Int     @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  precio      Decimal @db.Decimal(10, 2)
+  stock       Int     @default(0)
+  tipo        String  // "merchan", "comida", "bebida"
+  
+  // Relaciones
+  detalles    OrdenDetalle[]
+  
+  @@map("items")
+}
