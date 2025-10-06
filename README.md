@@ -26,5 +26,5 @@ Sistema de gestión de eventos desarrollado con Node.js, Express y Prisma.
    ```
 ### Diagrama ERD
 Puedes visualizar el diagrama ERD de la base de datos ejecutando:
-![ERD Diagram](./prisma/erd.png)
+![ERD Diagram](https://github.com/esdrasCopado/proyecto-eventos/blob/main/prisma/ERD.svg)
 
