@@ -21,11 +21,5 @@ docs for more detail on building and pushing.
 ### References
 * [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
 
-### Ejecutar pruebas
 
-Para ejecutar las pruebas de tu aplicación, puedes usar el siguiente comando:
-
-```bash
-npm test
-```
 
