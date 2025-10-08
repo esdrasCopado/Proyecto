@@ -1,4 +1,4 @@
-name: Tests de Integraci�n
+name: Tests de Integracion
 
 on:
   push:
@@ -38,6 +38,11 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      - name: Deshabilitar generador ERD para CI
+        run: |
+          sed -i '/generator erd {/,/^}/d' prisma/schema.prisma
+          cat prisma/schema.prisma
+
       - name: Generar Prisma Client
         run: npx prisma generate
 
@@ -53,6 +58,7 @@ jobs:
           NODE_ENV: test
 
       - name: Generar reporte de cobertura
+        if: success() || failure()
         run: npm run test:coverage
         env:
           DATABASE_URL: mysql://root:example_root@localhost:3306/eventos_db
@@ -64,3 +70,4 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+          retention-days: 30
