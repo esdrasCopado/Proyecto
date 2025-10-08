@@ -1,0 +1,66 @@
+name: Tests de Integraci�n
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Ejecutar Tests de Integraci�n
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: example_root
+          MYSQL_DATABASE: eventos_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Generar Prisma Client
+        run: npx prisma generate
+
+      - name: Ejecutar migraciones
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: mysql://root:example_root@localhost:3306/eventos_db
+
+      - name: Ejecutar tests
+        run: npm test
+        env:
+          DATABASE_URL: mysql://root:example_root@localhost:3306/eventos_db
+          NODE_ENV: test
+
+      - name: Generar reporte de cobertura
+        run: npm run test:coverage
+        env:
+          DATABASE_URL: mysql://root:example_root@localhost:3306/eventos_db
+          NODE_ENV: test
+
+      - name: Subir reporte de cobertura
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/

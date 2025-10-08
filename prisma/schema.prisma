@@ -70,7 +70,9 @@ model Artista {
   nombre String
   genero String
   contacto String
-
+  paisOrigen String
+  fechaDebut DateTime
+  disquera String?
   // relaciones
   eventos ArtistaEvento[]
   @@map("artistas")

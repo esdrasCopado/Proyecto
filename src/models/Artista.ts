@@ -10,14 +10,20 @@ export interface IArtistaData {
   id?: number;
   nombre: string;
   genero: string;
-  contacto?: string | null;
+  contacto: string;
+  paisOrigen: string;
+  fechaDebut: Date;
+  disquera?: string | null;
 }
 
 export class Artista {
   private _id?: number;
   private _nombre: string;
   private _genero: string;
-  private _contacto?: string | null;
+  private _contacto: string;
+  private _paisOrigen: string;
+  private _fechaDebut: Date;
+  private _disquera?: string | null;
 
   /**
    * Constructor de la clase Artista
@@ -29,6 +35,9 @@ export class Artista {
     this._nombre = data.nombre;
     this._genero = data.genero;
     this._contacto = data.contacto;
+    this._paisOrigen = data.paisOrigen;
+    this._fechaDebut = data.fechaDebut;
+    this._disquera = data.disquera;
 
     this.validar();
   }
@@ -63,8 +72,19 @@ export class Artista {
    * Obtiene el contacto del artista
    * @returns Información de contacto o null/undefined si no está disponible
    */
-  get contacto(): string | null | undefined {
+  get contacto(): string{
     return this._contacto;
+  }
+  get paisOrigen(): string {
+    return this._paisOrigen;
+  }
+
+  get fechaDebut(): Date {
+    return this._fechaDebut;
+  }
+
+  get disquera(): string | null | undefined {
+    return this._disquera;
   }
 
   // ==================== SETTERS ====================
@@ -103,11 +123,29 @@ export class Artista {
    * Establece la información de contacto del artista
    * @param value - Nueva información de contacto
    */
-  set contacto(value: string | null | undefined) {
+  set contacto(value: string) {
+    if (!value || value.trim().length === 0) {
+      throw new Error('El contacto es requerido');
+    }
+    this._contacto = value.trim();
+  }
+  set paisOrigen(value: string) {
+    if (!value || value.trim().length === 0) {
+      throw new Error('El país de origen es requerido');
+    }
+    this._paisOrigen = value.trim();
+  }
+  set fechaDebut(value: Date) {
+    if (!(value instanceof Date) || isNaN(value.getTime())) {
+      throw new Error('La fecha de debut es inválida');
+    }
+    this._fechaDebut = value;
+  }
+  set disquera(value: string | null | undefined) {
     if (value && value.trim().length === 0) {
-      this._contacto = null;
+      this._disquera = null;
     } else {
-      this._contacto = value;
+      this._disquera = value;
     }
   }
 
@@ -118,20 +156,28 @@ export class Artista {
    * @throws Error si algún dato es inválido
    * @private
    */
-  private validar(): void {
-    if (!this._nombre || this._nombre.trim().length === 0) {
-      throw new Error('El nombre del artista es requerido');
+
+private validar(): void {
+    // 1. Validaciones existentes (nombre y genero)
+    if (!this._nombre || this._nombre.trim().length === 0 || this._nombre.length > 200) {
+        throw new Error('El nombre del artista es inválido.');
     }
-    if (this._nombre.length > 200) {
-      throw new Error('El nombre del artista no puede exceder 200 caracteres');
+    if (!this._genero || this._genero.trim().length === 0 || this._genero.length > 100) {
+        throw new Error('El género musical es inválido.');
     }
-    if (!this._genero || this._genero.trim().length === 0) {
-      throw new Error('El género musical es requerido');
+    // Validar Contacto
+    if (!this._contacto || this._contacto.trim().length === 0) {
+        throw new Error('El contacto es requerido.');
     }
-    if (this._genero.length > 100) {
-      throw new Error('El género musical no puede exceder 100 caracteres');
+    // Validar País de Origen
+    if (!this._paisOrigen || this._paisOrigen.trim().length === 0) {
+        throw new Error('El país de origen es requerido.');
     }
-  }
+    // Validar Fecha de Debut
+    if (!(this._fechaDebut instanceof Date) || isNaN(this._fechaDebut.getTime())) {
+        throw new Error('La fecha de debut es inválida.');
+    }
+}
 
   /**
    * Valida si un nombre de artista es válido
@@ -214,6 +260,9 @@ export class Artista {
       nombre: this._nombre,
       genero: this._genero,
       contacto: this._contacto,
+      paisOrigen: this._paisOrigen,
+      fechaDebut: this._fechaDebut,
+      disquera: this._disquera,
     };
   }
 
@@ -228,6 +277,9 @@ export class Artista {
       nombre: data.nombre,
       genero: data.genero,
       contacto: data.contacto,
+      paisOrigen: data.paisOrigen,
+      fechaDebut: data.fechaDebut,
+      disquera: data.disquera,
     });
   }
 

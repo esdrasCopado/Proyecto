@@ -1,7 +1,7 @@
 /**
  * Entidad ArtistaEvento
  * Representa la relación entre un artista y un evento
- * Define el rol y la compensación del artista en un evento espec�fico
+ * Define el rol y la compensación del artista en un evento específico
  */
 
 export interface IArtistaEvento {
@@ -107,19 +107,19 @@ export class ArtistaEvento {
 
   private validar(): void {
     if (!ArtistaEvento.validarId(this._artistaId)) {
-      throw new Error('ID de artista inv�lido');
+      throw new Error('ID de artista invalido');
     }
     if (!ArtistaEvento.validarId(this._eventoId)) {
-      throw new Error('ID de evento inv�lido');
+      throw new Error('ID de evento invalido');
     }
     if (!ArtistaEvento.validarRol(this._rol)) {
-      throw new Error('Rol inv�lido');
+      throw new Error('Rol invalido');
     }
     if (!ArtistaEvento.validarCompensacion(this._compensacion)) {
-      throw new Error('Compensaci�n inv�lida');
+      throw new Error('Compensacion invalida');
     }
     if (!ArtistaEvento.validarFecha(this._fechaConfirmacion)) {
-      throw new Error('Fecha de confirmaci�n inv�lida');
+      throw new Error('Fecha de confirmacion invalida');
     }
   }
 
