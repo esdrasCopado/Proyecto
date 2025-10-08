@@ -13,6 +13,7 @@ generator erd {
   provider = "prisma-erd-generator"
   output   = "./ERD.svg"
   theme    = "forest"
+  disabled = env("SKIP_ERD")
 }
 
 datasource db {

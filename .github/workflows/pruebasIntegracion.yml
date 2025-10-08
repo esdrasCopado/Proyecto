@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Ejecutar Tests de Integraci�n
+    name: Ejecutar Tests de Integracion
     runs-on: ubuntu-latest
 
     services:
