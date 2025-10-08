@@ -2,6 +2,8 @@
 
 Sistema de gestión de eventos desarrollado con Node.js, Express y Prisma.
 
+[![Tests de Integracion](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml/badge.svg)](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml)
+
 ## Tabla de Contenidos
 - [Tecnologías](#tecnologías)
 - [Requisitos Previos](#requisitos-previos)
