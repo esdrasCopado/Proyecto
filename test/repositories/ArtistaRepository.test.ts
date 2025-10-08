@@ -112,15 +112,15 @@ describe('ArtistaRepository Integration Tests', () => {
                 contacto: 'newemail@example.com'
             });
 
-            expect(updated.genero).toBe('Blues Rock');
-            expect(updated.contacto).toBe('newemail@example.com');
-            expect(updated.nombre).toBe('Update Test');
+            expect(updated).not.toBeNull();
+            expect(updated!.genero).toBe('Blues Rock');
+            expect(updated!.contacto).toBe('newemail@example.com');
+            expect(updated!.nombre).toBe('Update Test');
         });
 
         test('should reject update of non-existent ID', async () => {
-            await expect(
-                artistaRepo.update(999999, { genero: 'Rock' })
-            ).rejects.toThrow();
+            const result = await artistaRepo.update(999999, { genero: 'New Genre' });
+            expect(result).toBeNull();
         });
     });
 

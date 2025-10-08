@@ -36,7 +36,7 @@ export class ArtistaRepository implements IArtistaRepository {
         });
         return artista ? Artista.fromDatabase(artista) : null;
     }
-    async update(id: number, artista: Partial<Artista>): Promise<Artista> {
+    async update(id: number, artista: Partial<Artista>): Promise<Artista | null> {
         try {
             const updatedArtista = await prisma.artista.update({
                 where: { id },
@@ -46,6 +46,9 @@ export class ArtistaRepository implements IArtistaRepository {
             });
             return Artista.fromDatabase(updatedArtista);
         } catch (error: any) {
+            if (error.code === 'P2025') {
+                return null;
+            }
             throw new Error("Error al actualizar el artista: " + error.message);
         }
     }
@@ -55,6 +58,9 @@ export class ArtistaRepository implements IArtistaRepository {
                 where: { id }
             });
         } catch (error: any) {
+            if (error.code === 'P2025') {
+                throw new Error('El artista no existe');
+            }
             throw new Error("Error al eliminar el artista: " + error.message);
         }
     }

@@ -1,12 +1,14 @@
 import { PrismaClient, Prisma } from "../generated/prisma";
 
-const logConfig: Prisma.LogLevel[] = process.env.NODE_ENV == 'development'
+const logConfig: Prisma.LogLevel[] = process.env.NODE_ENV === 'test'
+? []
+: process.env.NODE_ENV === 'development'
 ? ['query', 'info', 'warn', 'error']
 : ['error'];
 
 const prisma = new PrismaClient({
-    log:logConfig,
-    errorFormat: 'pretty', 
+    log: logConfig,
+    errorFormat: 'pretty',
 });
 
 const disconnect = async ()=>{

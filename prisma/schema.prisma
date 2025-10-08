@@ -40,7 +40,7 @@ model Usuario {
 model Evento {
   id Int @id @default(autoincrement())
   nombre String
-  descipcion String? @db.Text
+  descripcion String? @db.Text
   fecha DateTime
   ubicacion String
 
@@ -82,6 +82,9 @@ model ArtistaEvento {
   id Int @id @default(autoincrement())
   artistaId Int @map("artista_id")
   eventoId Int @map("evento_id")
+  rol String?
+  compensacion Decimal? @db.Decimal(10, 2)
+  fechaConfirmacion DateTime? @map("fecha_confirmacion")
 
   //relaciones
   artista Artista @relation(fields: [artistaId], references: [id])

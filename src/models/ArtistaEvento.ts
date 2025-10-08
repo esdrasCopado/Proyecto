@@ -69,28 +69,28 @@ export class ArtistaEvento {
 
   set artistaId(value: number) {
     if (!ArtistaEvento.validarId(value)) {
-      throw new Error('ID de artista inv�lido');
+      throw new Error('ID de artista invalido');
     }
     this._artistaId = value;
   }
 
   set eventoId(value: number) {
     if (!ArtistaEvento.validarId(value)) {
-      throw new Error('ID de evento inv�lido');
+      throw new Error('ID de evento invalido');
     }
     this._eventoId = value;
   }
 
   set rol(value: string) {
     if (!ArtistaEvento.validarRol(value)) {
-      throw new Error('Rol inv�lido');
+      throw new Error('Rol invalido');
     }
     this._rol = value.trim();
   }
 
   set compensacion(value: number) {
     if (!ArtistaEvento.validarCompensacion(value)) {
-      throw new Error('Compensaci�n inv�lida');
+      throw new Error('Compensacion invalida');
     }
     this._compensacion = value;
   }
@@ -98,7 +98,7 @@ export class ArtistaEvento {
   set fechaConfirmacion(value: Date | string) {
     const fecha = typeof value === 'string' ? new Date(value) : value;
     if (!ArtistaEvento.validarFecha(fecha)) {
-      throw new Error('Fecha de confirmaci�n inv�lida');
+      throw new Error('Fecha de confirmacion invalida');
     }
     this._fechaConfirmacion = fecha;
   }
@@ -206,7 +206,7 @@ export class ArtistaEvento {
       artistaId: data.artista_id || data.artistaId,
       eventoId: data.evento_id || data.eventoId,
       rol: data.rol,
-      compensacion: data.compensacion,
+      compensacion: data.compensacion ? Number(data.compensacion) : 0,
       fechaConfirmacion: data.fecha_confirmacion || data.fechaConfirmacion,
     });
   }

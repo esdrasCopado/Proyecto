@@ -4,6 +4,6 @@ export interface IArtistaRepository{
     save(artista: Artista): Promise<Artista>;
     findMany(): Promise <Artista[]>;
     findById(id: number): Promise<Artista | null>;
-    update(id: number, artista: Partial<Artista>): Promise<Artista>;
+    update(id: number, artista: Partial<Artista>): Promise<Artista | null>;
     delete(id: number): Promise<void>;
 }
