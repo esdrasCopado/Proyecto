@@ -33,10 +33,13 @@ module.exports = {
   
   // Timeout para tests (útil para BD)
   testTimeout: 10000,
-  
+
   // Mostrar información detallada
   verbose: true,
-  
+
   // Setup antes de ejecutar tests
   setupFilesAfterEnv: ['<rootDir>/test/setups.ts'],
+
+  // Ejecutar tests secuencialmente para evitar problemas de BD
+  maxWorkers: 1,
 };

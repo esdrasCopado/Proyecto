@@ -33,6 +33,7 @@ describe('ArtistaEventoRepository Integration Tests', () => {
     let testEventoId: number | undefined;
     let testArtistaEventoId: number | undefined;
     let testOrganizadorId: number | undefined;
+    let testUsuarioId: number | undefined;
 
     beforeAll(async () => {
         artistaEventoRepo = new ArtistaEventoRepository();
@@ -44,18 +45,22 @@ describe('ArtistaEventoRepository Integration Tests', () => {
     });
 
     beforeEach(async () => {
+        // Agregar un pequeño delay para evitar colisiones de timestamp
+        await new Promise(resolve => setTimeout(resolve, 10));
+
         // crea un usuario Unico
+        const timestamp = Date.now();
         const usuario = new Usuario({
-            email: `unique_${Date.now()}@test.com`,
+            email: `unique_${timestamp}_${Math.random()}@test.com`,
             password: 'password123',
             nombre: 'Test',
             apellidos: 'User',
             telefono: '1234567890'
         });
         const savedUsuario = await usuarioRepo.create(usuario);
+        testUsuarioId = savedUsuario.id;
 
         // Crear un artista de prueba con nombre único
-        const timestamp = Date.now();
         const artista = new Artista({
             nombre: `Test Artista ${timestamp}`,
             genero: 'Rock',
@@ -98,12 +103,20 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             testArtistaEventoId = undefined;
         }
 
-        // Limpiar evento
+        // Limpiar evento (debe ser antes de organizador por foreign key)
         if (testEventoId) {
             try {
                 await prisma.evento.deleteMany({ where: { id: testEventoId } });
             } catch { }
             testEventoId = undefined;
+        }
+
+        // Limpiar organizador (debe ser antes de usuario por foreign key)
+        if (testOrganizadorId) {
+            try {
+                await prisma.organizador.deleteMany({ where: { id: testOrganizadorId } });
+            } catch { }
+            testOrganizadorId = undefined;
         }
 
         // Limpiar artista
@@ -112,6 +125,14 @@ describe('ArtistaEventoRepository Integration Tests', () => {
                 await prisma.artista.deleteMany({ where: { id: testArtistaId } });
             } catch { }
             testArtistaId = undefined;
+        }
+
+        // Limpiar usuario (debe ser al final por foreign keys)
+        if (testUsuarioId) {
+            try {
+                await prisma.usuario.deleteMany({ where: { id: testUsuarioId } });
+            } catch { }
+            testUsuarioId = undefined;
         }
     });
 
