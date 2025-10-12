@@ -3,34 +3,42 @@
  * Representa un usuario del sistema que puede comprar boletos y realizar órdenes
  */
 
+import { Role } from '../types/enums';
+
 export interface IUsuario {
   id?: number;
   email: string;
+  password: string;
   nombre: string;
   apellidos: string;
   telefono: string;
   fechaRegistro?: Date | string;
+  rol?: Role;
 }
 
 export class Usuario {
   private _id?: number;
   private _email: string;
+  private _password: string;
   private _nombre: string;
   private _apellidos: string;
   private _telefono: string;
   private _fechaRegistro: Date;
+  private _rol: Role;
 
   constructor(data: IUsuario) {
     this._id = data.id;
     this._email = data.email;
+    this._password = data.password;
     this._nombre = data.nombre;
     this._apellidos = data.apellidos;
     this._telefono = data.telefono;
-    
+    this._rol = data.rol || Role.USER;
+
     // Convertir fechaRegistro a Date si viene como string
     if (data.fechaRegistro) {
-      this._fechaRegistro = typeof data.fechaRegistro === 'string' 
-        ? new Date(data.fechaRegistro) 
+      this._fechaRegistro = typeof data.fechaRegistro === 'string'
+        ? new Date(data.fechaRegistro)
         : data.fechaRegistro;
     } else {
       this._fechaRegistro = new Date();
@@ -49,6 +57,10 @@ export class Usuario {
     return this._email;
   }
 
+  get password(): string {
+    return this._password;
+  }
+
   get nombre(): string {
     return this._nombre;
   }
@@ -65,6 +77,10 @@ export class Usuario {
     return this._fechaRegistro;
   }
 
+  get rol(): Role {
+    return this._rol;
+  }
+
   // ==================== SETTERS ====================
 
   set email(value: string) {
@@ -72,6 +88,13 @@ export class Usuario {
       throw new Error('Email inválido');
     }
     this._email = value.trim();
+  }
+
+  set password(value: string) {
+    if (!Usuario.validarPassword(value)) {
+      throw new Error('Contraseña inválida. Debe tener al menos 6 caracteres');
+    }
+    this._password = value;
   }
 
   set nombre(value: string) {
@@ -103,6 +126,10 @@ export class Usuario {
     this._fechaRegistro = fecha;
   }
 
+  set rol(value: Role) {
+    this._rol = value;
+  }
+
   // ==================== VALIDACIONES ====================
 
   /**
@@ -112,6 +139,9 @@ export class Usuario {
   private validar(): void {
     if (!Usuario.validarEmail(this._email)) {
       throw new Error('Email inválido');
+    }
+    if (!Usuario.validarPassword(this._password)) {
+      throw new Error('Contraseña inválida. Debe tener al menos 6 caracteres');
     }
     if (!Usuario.validarNombre(this._nombre)) {
       throw new Error('Nombre inválido');
@@ -138,6 +168,19 @@ export class Usuario {
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  /**
+   * Valida una contraseña
+   * @param password - Contraseña a validar
+   * @returns true si la contraseña es válida
+   */
+  private static validarPassword(password: string): boolean {
+    if (!password || password.length === 0) {
+      return false;
+    }
+    // Mínimo 6 caracteres
+    return password.length >= 6;
   }
 
   /**
@@ -235,6 +278,38 @@ export class Usuario {
     return this.getDiasRegistrado() <= 30;
   }
 
+  /**
+   * Verifica si el usuario tiene rol de usuario normal
+   * @returns true si el rol es USER
+   */
+  public esUsuarioNormal(): boolean {
+    return this._rol === Role.USER;
+  }
+
+  /**
+   * Verifica si el usuario tiene rol de artista
+   * @returns true si el rol es ARTISTA
+   */
+  public esArtista(): boolean {
+    return this._rol === Role.ARTISTA;
+  }
+
+  /**
+   * Verifica si el usuario tiene rol de organizador
+   * @returns true si el rol es ORGANIZADOR
+   */
+  public esOrganizador(): boolean {
+    return this._rol === Role.ORGANIZADOR;
+  }
+
+  /**
+   * Verifica si el usuario tiene rol de administrador
+   * @returns true si el rol es ADMIN
+   */
+  public esAdmin(): boolean {
+    return this._rol === Role.ADMIN;
+  }
+
   // ==================== CONVERSIÓN DE DATOS ====================
 
   /**
@@ -245,10 +320,12 @@ export class Usuario {
     return {
       id: this._id,
       email: this._email,
+      password: this._password,
       nombre: this._nombre,
       apellidos: this._apellidos,
       telefono: this._telefono,
       fechaRegistro: this._fechaRegistro,
+      rol: this._rol,
     };
   }
 
@@ -261,10 +338,12 @@ export class Usuario {
     return new Usuario({
       id: data.id,
       email: data.email,
+      password: data.password,
       nombre: data.nombre,
       apellidos: data.apellidos,
       telefono: data.telefono,
       fechaRegistro: data.fechaRegistro || data.fecha_registro,
+      rol: data.rol,
     });
   }
 

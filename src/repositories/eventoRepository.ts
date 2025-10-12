@@ -11,11 +11,15 @@ export class EventoRepository implements IEventoRepository {
                     descripcion: evento.descripcion,
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
+                    organizadorId: evento.organizadorId,
                 },
             });
             return Evento.fromDatabase(newEvento);
-        } catch (error) {
-            throw new Error(`Error al guardar el evento: ${error}`);
+        } catch (error: any) {
+            if (error.code === 'P2003') {
+                throw new Error('Organizador no existe');
+            }
+            throw new Error(`Error al guardar el evento: ${error.message}`);
         }
     }
     async findById(id: number): Promise<Evento | null> {
@@ -37,11 +41,18 @@ export class EventoRepository implements IEventoRepository {
                     descripcion: evento.descripcion,
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
+                    organizadorId: evento.organizadorId,
                 },
             });
             return Evento.fromDatabase(updatedEvento);
-        } catch (error) {
-            throw new Error(`Error al actualizar el evento: ${error}`);
+        } catch (error: any) {
+            if (error.code === 'P2003') {
+                throw new Error('Organizador no existe');
+            }
+            if (error.code === 'P2025') {
+                throw new Error('Evento no encontrado');
+            }
+            throw new Error(`Error al actualizar el evento: ${error.message}`);
         }
     }
     async delete(id: number): Promise<void> {
@@ -55,10 +66,93 @@ export class EventoRepository implements IEventoRepository {
     }
     async findMany(): Promise<Evento[]> {
         try {
-            const eventos = await prisma.evento.findMany();
+            const eventos = await prisma.evento.findMany({
+                orderBy: {
+                    fecha: 'asc'
+                }
+            });
             return eventos.map(Evento.fromDatabase);
         } catch (error) {
             throw new Error(`Error al buscar eventos: ${error}`);
+        }
+    }
+
+    async findByOrganizadorId(organizadorId: number): Promise<Evento[]> {
+        try {
+            const eventos = await prisma.evento.findMany({
+                where: { organizadorId },
+                orderBy: {
+                    fecha: 'desc'
+                }
+            });
+            return eventos.map(Evento.fromDatabase);
+        } catch (error: any) {
+            throw new Error(`Error al buscar eventos por organizador: ${error.message}`);
+        }
+    }
+
+    async findByFechaRange(fechaInicio: Date, fechaFin: Date): Promise<Evento[]> {
+        try {
+            const eventos = await prisma.evento.findMany({
+                where: {
+                    fecha: {
+                        gte: fechaInicio,
+                        lte: fechaFin
+                    }
+                },
+                orderBy: {
+                    fecha: 'asc'
+                }
+            });
+            return eventos.map(Evento.fromDatabase);
+        } catch (error: any) {
+            throw new Error(`Error al buscar eventos por rango de fecha: ${error.message}`);
+        }
+    }
+
+    async findProximos(limite?: number): Promise<Evento[]> {
+        try {
+            const eventos = await prisma.evento.findMany({
+                where: {
+                    fecha: {
+                        gte: new Date()
+                    }
+                },
+                orderBy: {
+                    fecha: 'asc'
+                },
+                take: limite
+            });
+            return eventos.map(Evento.fromDatabase);
+        } catch (error: any) {
+            throw new Error(`Error al buscar eventos próximos: ${error.message}`);
+        }
+    }
+
+    async findPasados(limite?: number): Promise<Evento[]> {
+        try {
+            const eventos = await prisma.evento.findMany({
+                where: {
+                    fecha: {
+                        lt: new Date()
+                    }
+                },
+                orderBy: {
+                    fecha: 'desc'
+                },
+                take: limite
+            });
+            return eventos.map(Evento.fromDatabase);
+        } catch (error: any) {
+            throw new Error(`Error al buscar eventos pasados: ${error.message}`);
+        }
+    }
+
+    async count(): Promise<number> {
+        try {
+            return await prisma.evento.count();
+        } catch (error: any) {
+            throw new Error(`Error al contar eventos: ${error.message}`);
         }
     }
 }

@@ -1,31 +1,59 @@
 /**
  * Test de integración para el repositorio de ArtistaEvento
  */
+// Artistas 
 import { ArtistaEventoRepository } from '../../src/repositories/artistaEventoRepository';
 import { ArtistaRepository } from '../../src/repositories/artistaRepository';
 import { EventoRepository } from '../../src/repositories/eventoRepository';
-import prisma from '../../src/config/database';
-import { ArtistaEvento } from '../../src/models/ArtistaEvento';
 import { Artista } from '../../src/models/Artista';
+
+import { ArtistaEvento } from '../../src/models/ArtistaEvento';
+
 import { Evento } from '../../src/models/Evento';
+import { OrganizadorRepository } from '../../src/repositories/OrganizadorRepository';
+import { Organizador } from '../../src/models/Organizador';
+
+// Usuarios
+import { Usuario } from '../../src/models/Usuario';
+import { UsuarioRepository } from '../../src/repositories/UsuarioRepository';
+
+
+import { RolArtista } from '../../src/types/enums';
+import prisma from '../../src/config/database';
 
 describe('ArtistaEventoRepository Integration Tests', () => {
     let artistaEventoRepo: ArtistaEventoRepository;
     let artistaRepo: ArtistaRepository;
     let eventoRepo: EventoRepository;
+    let organizadorRepo: OrganizadorRepository;
+
+    let usuarioRepo: UsuarioRepository;
 
     let testArtistaId: number | undefined;
     let testEventoId: number | undefined;
     let testArtistaEventoId: number | undefined;
+    let testOrganizadorId: number | undefined;
 
     beforeAll(async () => {
         artistaEventoRepo = new ArtistaEventoRepository();
         artistaRepo = new ArtistaRepository();
         eventoRepo = new EventoRepository();
+        usuarioRepo = new UsuarioRepository();
+        organizadorRepo = new OrganizadorRepository();
         await prisma.$connect();
     });
 
     beforeEach(async () => {
+        // crea un usuario Unico
+        const usuario = new Usuario({
+            email: `unique_${Date.now()}@test.com`,
+            password: 'password123',
+            nombre: 'Test',
+            apellidos: 'User',
+            telefono: '1234567890'
+        });
+        const savedUsuario = await usuarioRepo.create(usuario);
+
         // Crear un artista de prueba con nombre único
         const timestamp = Date.now();
         const artista = new Artista({
@@ -37,13 +65,25 @@ describe('ArtistaEventoRepository Integration Tests', () => {
         });
         const savedArtista = await artistaRepo.save(artista);
         testArtistaId = savedArtista.id;
+        // Crear un organizador de prueba con nombre único
+        const organizador = new Organizador({
+            nombre: `Test Organizador ${timestamp}`,
+            contacto: `test${timestamp}@example.com`,
+            pais: 'USA',
+            fundacion: new Date('2000-01-01'),
+            usuarioId: savedUsuario.id!
+        });
+        const savedOrganizador = await organizadorRepo.create(organizador);
+        testOrganizadorId = savedOrganizador.id;
 
         // Crear un evento de prueba con nombre único
         const evento = new Evento({
             nombre: `Test Evento ${timestamp}`,
             descripcion: 'Evento de prueba',
             fecha: new Date('2025-12-31'),
-            ubicacion: 'Test Location'
+            ubicacion: 'Test Location',
+
+            organizadorId: testOrganizadorId ? testOrganizadorId : 1, 
         });
         const savedEvento = await eventoRepo.save(evento);
         testEventoId = savedEvento.id;
@@ -84,18 +124,18 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Artista Principal',
+                rol: RolArtista.HEADLINER,
                 compensacion: 5000,
                 fechaConfirmacion: new Date()
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento);
+            const saved = await artistaEventoRepo.create(artistaEvento);
 
             expect(saved).toBeDefined();
             expect(saved.id).toBeDefined();
             expect(saved.artistaId).toBe(testArtistaId);
             expect(saved.eventoId).toBe(testEventoId);
-            expect(saved.rol).toBe('Artista Principal');
+            expect(saved.rol).toBe(RolArtista.HEADLINER);
             expect(saved.compensacion).toBe(5000);
 
             testArtistaEventoId = saved.id;
@@ -105,31 +145,31 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento1 = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Headliner',
+                rol: RolArtista.HEADLINER,
                 compensacion: 10000
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento1);
+            const saved = await artistaEventoRepo.create(artistaEvento1);
             testArtistaEventoId = saved.id;
 
             const artistaEvento2 = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Support Act',
+                rol: RolArtista.INVITADO,
                 compensacion: 3000
             });
 
-            await expect(artistaEventoRepo.save(artistaEvento2)).rejects.toThrow();
+            await expect(artistaEventoRepo.create(artistaEvento2)).rejects.toThrow();
         });
 
         test('should reject invalid foreign keys', async () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: 999999,
                 eventoId: 999999,
-                rol: 'Test Role'
+                rol: RolArtista.INVITADO
             });
 
-            await expect(artistaEventoRepo.save(artistaEvento)).rejects.toThrow();
+            await expect(artistaEventoRepo.create(artistaEvento)).rejects.toThrow();
         });
     });
 
@@ -138,11 +178,11 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Guest Artist',
+                rol: RolArtista.COLABORADOR,
                 compensacion: 2000
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento);
+            const saved = await artistaEventoRepo.create(artistaEvento);
             testArtistaEventoId = saved.id;
 
             const found = await artistaEventoRepo.findById(saved.id!);
@@ -164,25 +204,25 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Opening Act',
+                rol: RolArtista.HEADLINER,
                 compensacion: 1500
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento);
+            const saved = await artistaEventoRepo.create(artistaEvento);
             testArtistaEventoId = saved.id;
 
             const updatedData = new ArtistaEvento({
                 id: saved.id,
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Main Act',
+                rol: RolArtista.HEADLINER,
                 compensacion: 7500
             });
 
             const updated = await artistaEventoRepo.update(updatedData);
 
             expect(updated.id).toBe(saved.id);
-            expect(updated.rol).toBe('Main Act');
+            expect(updated.rol).toBe(RolArtista.HEADLINER);
             expect(updated.compensacion).toBe(7500);
         });
 
@@ -191,7 +231,7 @@ describe('ArtistaEventoRepository Integration Tests', () => {
                 id: 999999,
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Test'
+                rol: RolArtista.INVITADO
             });
 
             await expect(artistaEventoRepo.update(artistaEvento)).rejects.toThrow();
@@ -203,10 +243,10 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Special Guest'
+                rol: RolArtista.COLABORADOR
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento);
+            const saved = await artistaEventoRepo.create(artistaEvento);
 
             await artistaEventoRepo.delete(saved.id!);
 
@@ -226,11 +266,11 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const artistaEvento = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Featured Artist',
+                rol: RolArtista.HEADLINER,
                 compensacion: 4000
             });
 
-            const saved = await artistaEventoRepo.save(artistaEvento);
+            const saved = await artistaEventoRepo.create(artistaEvento);
             testArtistaEventoId = saved.id;
 
             const results = await artistaEventoRepo.findMany();
@@ -254,7 +294,8 @@ describe('ArtistaEventoRepository Integration Tests', () => {
                 nombre: 'Second Test Evento',
                 descripcion: 'Second evento',
                 fecha: new Date('2026-01-15'),
-                ubicacion: 'Another Location'
+                ubicacion: 'Another Location',
+                organizadorId: testOrganizadorId! // Usar el organizador del test
             });
             const savedEvento2 = await eventoRepo.save(evento2);
 
@@ -262,17 +303,17 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const ae1 = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Headliner'
+                rol: RolArtista.HEADLINER
             });
 
             const ae2 = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: savedEvento2.id!,
-                rol: 'Guest'
+                rol: RolArtista.TELONERO
             });
 
-            const saved1 = await artistaEventoRepo.save(ae1);
-            const saved2 = await artistaEventoRepo.save(ae2);
+            const saved1 = await artistaEventoRepo.create(ae1);
+            const saved2 = await artistaEventoRepo.create(ae2);
 
             const results = await artistaEventoRepo.findByArtistaId(testArtistaId!);
 
@@ -313,17 +354,17 @@ describe('ArtistaEventoRepository Integration Tests', () => {
             const ae1 = new ArtistaEvento({
                 artistaId: testArtistaId!,
                 eventoId: testEventoId!,
-                rol: 'Main Act'
+                rol: RolArtista.HEADLINER
             });
 
             const ae2 = new ArtistaEvento({
                 artistaId: savedArtista2.id!,
                 eventoId: testEventoId!,
-                rol: 'Opening Act'
+                rol: RolArtista.TELONERO
             });
 
-            const saved1 = await artistaEventoRepo.save(ae1);
-            const saved2 = await artistaEventoRepo.save(ae2);
+            const saved1 = await artistaEventoRepo.create(ae1);
+            const saved2 = await artistaEventoRepo.create(ae2);
 
             const results = await artistaEventoRepo.findByEventoId(testEventoId!);
 

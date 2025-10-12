@@ -4,24 +4,28 @@
 
 export interface IEvento {
     id?: number;
-    nombre?: string;
+    nombre: string;
     descripcion?: string;
-    fecha?: Date;
-    ubicacion?: string;
+    fecha: Date;
+    ubicacion: string;
+    organizadorId: number;
 }
+
 export class Evento {
     private _id?: number;
     private _nombre: string;
     private _descripcion: string;
     private _fecha: Date;
     private _ubicacion: string;
+    private _organizadorId: number;
 
     constructor(data: IEvento) {
         this._id = data.id;
-        this._nombre = data.nombre || 'Evento Sin Nombre';
+        this._nombre = data.nombre;
         this._descripcion = data.descripcion || '';
-        this._fecha = data.fecha ? new Date(data.fecha) : new Date();
-        this._ubicacion = data.ubicacion || 'Ubicación No Especificada';
+        this._fecha = data.fecha instanceof Date ? data.fecha : new Date(data.fecha);
+        this._ubicacion = data.ubicacion;
+        this._organizadorId = data.organizadorId;
         this.validar();
     }
     // ==================== GETTERS ====================
@@ -45,6 +49,11 @@ export class Evento {
     get ubicacion(): string {
         return this._ubicacion;
     }
+
+    get organizadorId(): number {
+        return this._organizadorId;
+    }
+
     // ==================== SETTERS ====================
 
     set nombre(value: string) {
@@ -75,6 +84,14 @@ export class Evento {
         }
         this._ubicacion = value.trim();
     }
+
+    set organizadorId(value: number) {
+        if (!Evento.validarId(value)) {
+            throw new Error('ID de organizador inválido');
+        }
+        this._organizadorId = value;
+    }
+
     // ==================== VALIDACIONES ====================
     private validar(): void {
         if (!Evento.validarNombre(this._nombre)) {
@@ -88,6 +105,9 @@ export class Evento {
         }
         if (!Evento.validarDescripcion(this._descripcion)) {
             throw new Error('Descripción invalida');
+        }
+        if (!Evento.validarId(this._organizadorId)) {
+            throw new Error('ID de organizador inválido');
         }
     }
     private static validarNombre(nombre: string): boolean {
@@ -107,6 +127,10 @@ export class Evento {
 
     }
 
+    private static validarId(id: number): boolean {
+        return typeof id === 'number' && id > 0 && Number.isInteger(id);
+    }
+
     // ==================== CONVERSORES ====================
     public static fromDatabase(data: any): Evento {
         return new Evento({
@@ -114,8 +138,20 @@ export class Evento {
             nombre: data.nombre,
             descripcion: data.descripcion,
             fecha: data.fecha,
-            ubicacion: data.ubicacion
+            ubicacion: data.ubicacion,
+            organizadorId: data.organizadorId || data.organizador_id
         });
+    }
+
+    public toJSON(): IEvento {
+        return {
+            id: this._id,
+            nombre: this._nombre,
+            descripcion: this._descripcion,
+            fecha: this._fecha,
+            ubicacion: this._ubicacion,
+            organizadorId: this._organizadorId
+        };
     }
 }
 

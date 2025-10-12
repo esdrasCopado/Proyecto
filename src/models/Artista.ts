@@ -14,6 +14,7 @@ export interface IArtistaData {
   paisOrigen: string;
   fechaDebut: Date;
   disquera?: string | null;
+  usuarioId?: number | null;
 }
 
 export class Artista {
@@ -24,6 +25,7 @@ export class Artista {
   private _paisOrigen: string;
   private _fechaDebut: Date;
   private _disquera?: string | null;
+  private _usuarioId?: number | null;
 
   /**
    * Constructor de la clase Artista
@@ -38,6 +40,7 @@ export class Artista {
     this._paisOrigen = data.paisOrigen;
     this._fechaDebut = data.fechaDebut;
     this._disquera = data.disquera;
+    this._usuarioId = data.usuarioId;
 
     this.validar();
   }
@@ -85,6 +88,14 @@ export class Artista {
 
   get disquera(): string | null | undefined {
     return this._disquera;
+  }
+
+  /**
+   * Obtiene el ID del usuario asociado
+   * @returns ID del usuario o null/undefined si no está asociado
+   */
+  get usuarioId(): number | null | undefined {
+    return this._usuarioId;
   }
 
   // ==================== SETTERS ====================
@@ -149,6 +160,19 @@ export class Artista {
     }
   }
 
+  /**
+   * Establece el ID del usuario asociado
+   * @param value - ID del usuario o null para desasociar
+   */
+  set usuarioId(value: number | null | undefined) {
+    if (value !== null && value !== undefined) {
+      if (typeof value !== 'number' || value <= 0 || !Number.isInteger(value)) {
+        throw new Error('El ID de usuario debe ser un número entero positivo');
+      }
+    }
+    this._usuarioId = value;
+  }
+
   // ==================== VALIDACIONES ====================
 
   /**
@@ -176,6 +200,12 @@ private validar(): void {
     // Validar Fecha de Debut
     if (!(this._fechaDebut instanceof Date) || isNaN(this._fechaDebut.getTime())) {
         throw new Error('La fecha de debut es inválida.');
+    }
+    // Validar Usuario ID (si existe)
+    if (this._usuarioId !== null && this._usuarioId !== undefined) {
+        if (typeof this._usuarioId !== 'number' || this._usuarioId <= 0 || !Number.isInteger(this._usuarioId)) {
+            throw new Error('El ID de usuario es inválido.');
+        }
     }
 }
 
@@ -248,6 +278,42 @@ private validar(): void {
     return this._nombre.toLowerCase().includes(palabra.toLowerCase());
   }
 
+  /**
+   * Verifica si el artista tiene un usuario asociado
+   * @returns true si tiene usuarioId asignado
+   */
+  public tieneUsuarioAsociado(): boolean {
+    return this._usuarioId !== null && this._usuarioId !== undefined;
+  }
+
+  /**
+   * Asocia el artista a un usuario
+   * @param usuarioId - ID del usuario a asociar
+   * @throws Error si el ID es inválido
+   */
+  public asociarUsuario(usuarioId: number): void {
+    if (typeof usuarioId !== 'number' || usuarioId <= 0 || !Number.isInteger(usuarioId)) {
+      throw new Error('El ID de usuario debe ser un número entero positivo');
+    }
+    this._usuarioId = usuarioId;
+  }
+
+  /**
+   * Desasocia el artista del usuario
+   */
+  public desasociarUsuario(): void {
+    this._usuarioId = null;
+  }
+
+  /**
+   * Verifica si el artista está asociado a un usuario específico
+   * @param usuarioId - ID del usuario a verificar
+   * @returns true si está asociado a ese usuario
+   */
+  public estaAsociadoAUsuario(usuarioId: number): boolean {
+    return this._usuarioId === usuarioId;
+  }
+
   // ==================== CONVERSIÓN DE DATOS ====================
 
   /**
@@ -263,6 +329,7 @@ private validar(): void {
       paisOrigen: this._paisOrigen,
       fechaDebut: this._fechaDebut,
       disquera: this._disquera,
+      usuarioId: this._usuarioId,
     };
   }
 
@@ -280,6 +347,7 @@ private validar(): void {
       paisOrigen: data.paisOrigen,
       fechaDebut: data.fechaDebut,
       disquera: data.disquera,
+      usuarioId: data.usuarioId || data.usuario_id,
     });
   }
 

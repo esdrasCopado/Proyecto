@@ -1,6 +1,10 @@
 # proyecto-eventos
 
-Sistema de gestión de eventos desarrollado con Node.js, Express y Prisma.
+Sistema de gestión de eventos desarrollado con Node.js, Prisma.
+Para este proyecto se ha utilizado MySQL como base de datos y TypeScript como lenguaje principal, la razon principal de escojer MySQL es por su facilidad de uso y amplia adopción en la industria, además de su robustez y escalabilidad para manejar grandes volúmenes de datos, lo que es esencial para una aplicación de gestión de eventos que puede tener muchos usuarios y transacciones simultáneas.
+
+### Segundo Avance: 
+Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Evento, Boleto, Orden), Se crearon los repositorios y 5 pruebas de integracion con 49 tests automaticos.
 
 [![Tests de Integracion](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml/badge.svg)](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml)
 

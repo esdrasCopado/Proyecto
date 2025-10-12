@@ -1,9 +1,10 @@
 import { IUserRepository } from "../interfaces/IUserRepository";
 import { Usuario } from "../models/Usuario"
+import { Role } from "../types/enums";
 import prisma from "../config/database"
 
 export class UsuarioRepository implements IUserRepository {
-    async save(usuario: Usuario): Promise<Usuario> {
+    async create(usuario: Usuario): Promise<Usuario> {
         try {
             const existe = await prisma.usuario.findFirst({
                 where: { email: usuario.email}
@@ -16,10 +17,12 @@ export class UsuarioRepository implements IUserRepository {
             const usuarioCreado = await prisma.usuario.create({
                 data: {
                     email: usuario.email,
+                    password: usuario.password,
                     nombre: usuario.nombre,
                     apellidos: usuario.apellidos,
                     telefono: usuario.telefono,
                     fechaRegistro: usuario.fechaRegistro,
+                    rol: usuario.rol,
                 }
             })
             return Usuario.fromDatabase(usuarioCreado);
@@ -85,9 +88,11 @@ export class UsuarioRepository implements IUserRepository {
                 // Filtrar campos undefined para evitar sobrescribir con undefined
                 const updateData: any = {};
                 if (usuario.email !== undefined) updateData.email = usuario.email;
+                if (usuario.password !== undefined) updateData.password = usuario.password;
                 if (usuario.nombre !== undefined) updateData.nombre = usuario.nombre;
                 if (usuario.apellidos !== undefined) updateData.apellidos = usuario.apellidos;
                 if (usuario.telefono !== undefined) updateData.telefono = usuario.telefono;
+                if (usuario.rol !== undefined) updateData.rol = usuario.rol;
 
                 // Actualizar usuario solo si hay campos para actualizar
                 if (Object.keys(updateData).length === 0) {
@@ -239,6 +244,21 @@ export class UsuarioRepository implements IUserRepository {
             return usuario !== null;
         } catch (error: any) {
             throw new Error(`Error al verificar email: ${error.message}`)
+        }
+    }
+
+    async findByRol(rol: Role): Promise<Usuario[]> {
+        try {
+            const usuarios = await prisma.usuario.findMany({
+                where: { rol },
+                orderBy: {
+                    fechaRegistro: 'desc'
+                }
+            });
+
+            return usuarios.map(u => Usuario.fromDatabase(u));
+        } catch (error: any) {
+            throw new Error(`Error al buscar usuarios por rol: ${error.message}`);
         }
     }
 

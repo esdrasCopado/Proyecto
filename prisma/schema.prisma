@@ -20,122 +20,151 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id Int @id @default(autoincrement())
-  email String
-  nombre String
-  apellidos String
-  telefono String
-  fechaRegistro DateTime @default(now()) @map("fecha_registro")
+enum Role {
+  USER
+  ARTISTA
+  ORGANIZADOR
+  ADMIN
+}
 
-  //relaciones
+enum TipoBoleto {
+  VIP
+  GENERAL
+  PLATINO
+  ORO
+}
+
+enum EstadoOrden {
+  PENDIENTE
+  PAGADO
+  CANCELADO
+  REEMBOLSADO
+}
+
+enum RolArtista {
+  HEADLINER
+  TELONERO
+  INVITADO
+  COLABORADOR
+}
+
+model Usuario {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  password      String
+  nombre        String
+  apellidos     String
+  telefono      String
+  fechaRegistro DateTime @default(now()) @map("fecha_registro")
+  rol           Role     @default(USER)
+
   boletos Boleto[]
   ordenes Orden[]
 
+  artista     Artista?
+  organizador Organizador?
+
   @@map("usuarios")
-
-}
-
-
-model Evento {
-  id Int @id @default(autoincrement())
-  nombre String
-  descripcion String? @db.Text
-  fecha DateTime
-  ubicacion String
-
-  //relaciones
-  boletos Boleto[]
-  artistas ArtistaEvento[]
-
-}
-
-model Boleto {
-  id Int @id @default(autoincrement())
-  precio Decimal
-  tipo String // VIP, General, etc
-  disponible Boolean
-  
-  // claves foraneas
-  eventoId Int @map("evento_id")
-  usuarioId Int? @map("usuario_id")
-
-  // relaciones
-  evento Evento @relation(fields: [eventoId], references: [id])
-  usuario Usuario? @relation(fields: [usuarioId], references: [id])
 }
 
 model Artista {
-  id Int @id @default(autoincrement())
-  nombre String
-  genero String
-  contacto String
+  id         Int             @id @default(autoincrement())
+  nombre     String
+  genero     String
+  contacto   String
   paisOrigen String
   fechaDebut DateTime
-  disquera String?
-  // relaciones
-  eventos ArtistaEvento[]
+  disquera   String?
+  usuarioId  Int?            @unique @map("usuario_id")
+  usuario    Usuario?        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  eventos    ArtistaEvento[]
+
   @@map("artistas")
 }
 
-model ArtistaEvento {
-  id Int @id @default(autoincrement())
-  artistaId Int @map("artista_id")
-  eventoId Int @map("evento_id")
-  rol String?
-  compensacion Decimal? @db.Decimal(10, 2)
-  fechaConfirmacion DateTime? @map("fecha_confirmacion")
+model Organizador {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  contacto  String
+  pais      String
+  fundacion DateTime
+  usuarioId Int?     @unique @map("usuario_id")
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  eventos   Evento[]
+
+  @@map("organizadores")
+}
+
+model Evento {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?  @db.Text
+  fecha       DateTime
+  ubicacion   String
 
   //relaciones
-  artista Artista @relation(fields: [artistaId], references: [id])
-  evento Evento @relation(fields: [eventoId], references: [id])
+  boletos       Boleto[]
+  artistas      ArtistaEvento[]
+  organizadorId Int             @map("organizador_id")
+  organizador   Organizador     @relation(fields: [organizadorId], references: [id], onDelete: Cascade)
+
+  @@index([fecha])
+  @@index([organizadorId])
+  @@map("eventos")
+}
+
+model Boleto {
+  id         Int        @id @default(autoincrement())
+  precio     Decimal    @db.Decimal(10, 2)
+  tipo       TipoBoleto @default(GENERAL)
+  disponible Boolean
+
+  // claves foraneas
+  eventoId  Int  @map("evento_id")
+  usuarioId Int? @map("usuario_id")
+  ordenId   Int? @map("orden_id")
+
+  // relaciones
+  evento  Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  usuario Usuario? @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  orden   Orden?   @relation(fields: [ordenId], references: [id], onDelete: SetNull)
+
+  @@index([eventoId])
+  @@index([usuarioId])
+  @@index([ordenId])
+  @@map("boletos")
+}
+
+model ArtistaEvento {
+  id                Int         @id @default(autoincrement())
+  artistaId         Int         @map("artista_id")
+  eventoId          Int         @map("evento_id")
+  rol               RolArtista? @default(INVITADO)
+  compensacion      Decimal?    @db.Decimal(10, 2)
+  fechaConfirmacion DateTime?   @map("fecha_confirmacion")
+
+  //relaciones
+  artista Artista @relation(fields: [artistaId], references: [id], onDelete: Cascade)
+  evento  Evento  @relation(fields: [eventoId], references: [id], onDelete: Cascade)
 
   @@unique([artistaId, eventoId])
   @@map("artista_evento")
 }
 
 model Orden {
-  id      Int      @id @default(autoincrement())
-  total   Decimal  @db.Decimal(10, 2)
-  fecha   DateTime @default(now())
-  estado  String   @default("pendiente")
-  
+  id     Int         @id @default(autoincrement())
+  total  Decimal     @db.Decimal(10, 2)
+  fecha  DateTime    @default(now())
+  estado EstadoOrden @default(PENDIENTE)
+
   // Clave foránea
-  usuarioId Int    @map("usuario_id")
-  
+  usuarioId Int @map("usuario_id")
+
   // Relaciones
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
-  detalles  OrdenDetalle[]
-  
+  usuario Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  boletos Boleto[]
+
+  @@index([usuarioId])
+  @@index([fecha])
   @@map("ordenes")
-}
-
-model OrdenDetalle {
-  id       Int     @id @default(autoincrement())
-  cantidad Int
-  precio   Decimal @db.Decimal(10, 2)
-  
-  // Claves foráneas
-  ordenId  Int     @map("orden_id")
-  itemId   Int     @map("item_id")
-  
-  // Relaciones
-  orden    Orden   @relation(fields: [ordenId], references: [id])
-  item     Item    @relation(fields: [itemId], references: [id])
-  
-  @@map("orden_detalles")
-}
-
-model Item {
-  id          Int     @id @default(autoincrement())
-  nombre      String
-  descripcion String?
-  precio      Decimal @db.Decimal(10, 2)
-  stock       Int     @default(0)
-  tipo        String  // "merchan", "comida", "bebida"
-  
-  // Relaciones
-  detalles    OrdenDetalle[]
-  
-  @@map("items")
 }

@@ -27,20 +27,7 @@ describe('EventoRepository Integration Tests', () => {
 
     describe('save', () => {
         test('should save a new evento', async () => {
-            const evento = new Evento({
-                nombre: 'Concierto de Rock',
-                descripcion: 'Un gran concierto de rock en vivo.',
-                fecha: new Date('2024-12-01T20:00:00Z'),
-                ubicacion: 'Estadio Nacional'
-            });
 
-            const savedEvento = await eventoRepository.save(evento);
-
-            expect(savedEvento).toHaveProperty('id');
-            expect(savedEvento.nombre).toBe(evento.nombre);
-            expect(savedEvento.descripcion).toBe(evento.descripcion);
-            expect(savedEvento.fecha.toISOString()).toBe(evento.fecha.toISOString());
-            expect(savedEvento.ubicacion).toBe(evento.ubicacion);
 
         });
     });

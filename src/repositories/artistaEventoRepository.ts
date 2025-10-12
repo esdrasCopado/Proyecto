@@ -1,10 +1,11 @@
 import { ArtistaEvento } from "../models/ArtistaEvento";
+import { RolArtista } from "../types/enums";
 import prisma from "../config/database";
 import { IArtistaEventoRepository } from "../interfaces/IArtista-EventoRepository";
-import { ca } from "zod/v4/locales";
 
 export class ArtistaEventoRepository implements IArtistaEventoRepository {
-    async save(artistaEvento: ArtistaEvento): Promise<ArtistaEvento> {
+
+    async create(artistaEvento: ArtistaEvento): Promise<ArtistaEvento> {
         try {
             const created = await prisma.artistaEvento.create({
                 data: {
@@ -90,5 +91,34 @@ export class ArtistaEventoRepository implements IArtistaEventoRepository {
             throw new Error("Error al buscar ArtistaEvento por eventoId: " + error.message);
         }
     }
-    
+
+    async findByRol(rol: RolArtista): Promise<ArtistaEvento[]> {
+        try {
+            const found = await prisma.artistaEvento.findMany({
+                where: { rol }
+            });
+            return found.map(ArtistaEvento.fromDatabase);
+        } catch (error : any) {
+            throw new Error("Error al buscar ArtistaEvento por rol: " + error.message);
+        }
+    }
+
+    async findHeadliners(): Promise<ArtistaEvento[]> {
+        return this.findByRol(RolArtista.HEADLINER);
+    }
+
+    async findByEventoIdAndRol(eventoId: number, rol: RolArtista): Promise<ArtistaEvento[]> {
+        try {
+            const found = await prisma.artistaEvento.findMany({
+                where: {
+                    eventoId,
+                    rol
+                }
+            });
+            return found.map(ArtistaEvento.fromDatabase);
+        } catch (error : any) {
+            throw new Error("Error al buscar ArtistaEvento por eventoId y rol: " + error.message);
+        }
+    }
+
 }

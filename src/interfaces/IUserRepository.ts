@@ -1,8 +1,9 @@
 // src/interfaces/IUserRepository.ts
 import { Usuario } from '../models/Usuario';
+import { Role } from '../types/enums';
 
 export interface IUserRepository {
-    save(usuario: Usuario): Promise<Usuario>;
+    create(usuario: Usuario): Promise<Usuario>;
     findMany(): Promise<Usuario[]>;
     findById(id: number): Promise<Usuario | null>;
     update(id: number, usuario: Partial<Usuario>): Promise<Usuario>;
@@ -12,7 +13,8 @@ export interface IUserRepository {
     findByNombre(nombre: string): Promise<Usuario[]>;
     findByRangoFecha(fechaInicio: Date, fecha: Date): Promise<Usuario[]>;
     findWithPaginatio(page: number, pageSize: number): Promise <Usuario[]>;
+    findByRol(rol: Role): Promise<Usuario[]>;
     count(): Promise<number>;
     emailExists(email: string): Promise<boolean>;
-    
+
 }

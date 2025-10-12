@@ -4,11 +4,13 @@
  * Define el rol y la compensación del artista en un evento específico
  */
 
+import { RolArtista } from '../types/enums';
+
 export interface IArtistaEvento {
   id?: number;
   artistaId: number;
   eventoId: number;
-  rol?: string;
+  rol?: RolArtista;
   compensacion?: number;
   fechaConfirmacion?: Date | string;
 }
@@ -17,7 +19,7 @@ export class ArtistaEvento {
   private _id?: number;
   private _artistaId: number;
   private _eventoId: number;
-  private _rol: string;
+  private _rol: RolArtista;
   private _compensacion: number;
   private _fechaConfirmacion: Date;
 
@@ -25,7 +27,7 @@ export class ArtistaEvento {
     this._id = data.id;
     this._artistaId = data.artistaId;
     this._eventoId = data.eventoId;
-    this._rol = data.rol || 'Artista Principal';
+    this._rol = data.rol || RolArtista.INVITADO;
     this._compensacion = data.compensacion || 0;
 
     if (data.fechaConfirmacion) {
@@ -53,7 +55,7 @@ export class ArtistaEvento {
     return this._eventoId;
   }
 
-  get rol(): string {
+  get rol(): RolArtista {
     return this._rol;
   }
 
@@ -81,11 +83,8 @@ export class ArtistaEvento {
     this._eventoId = value;
   }
 
-  set rol(value: string) {
-    if (!ArtistaEvento.validarRol(value)) {
-      throw new Error('Rol invalido');
-    }
-    this._rol = value.trim();
+  set rol(value: RolArtista) {
+    this._rol = value;
   }
 
   set compensacion(value: number) {
@@ -112,9 +111,6 @@ export class ArtistaEvento {
     if (!ArtistaEvento.validarId(this._eventoId)) {
       throw new Error('ID de evento invalido');
     }
-    if (!ArtistaEvento.validarRol(this._rol)) {
-      throw new Error('Rol invalido');
-    }
     if (!ArtistaEvento.validarCompensacion(this._compensacion)) {
       throw new Error('Compensacion invalida');
     }
@@ -125,16 +121,6 @@ export class ArtistaEvento {
 
   private static validarId(id: number): boolean {
     return typeof id === 'number' && id > 0 && Number.isInteger(id);
-  }
-
-  private static validarRol(rol: string): boolean {
-    if (!rol || rol.trim().length === 0) {
-      return false;
-    }
-    if (rol.length > 100) {
-      return false;
-    }
-    return true;
   }
 
   private static validarCompensacion(compensacion: number): boolean {
@@ -150,12 +136,36 @@ export class ArtistaEvento {
 
   // ==================== MÉTODOS DE NEGOCIO ====================
 
-  public esArtistaPrincipal(): boolean {
-    return this._rol.toLowerCase().includes('principal');
+  /**
+   * Verifica si el artista es el headliner (artista principal)
+   * @returns true si el rol es HEADLINER
+   */
+  public esHeadliner(): boolean {
+    return this._rol === RolArtista.HEADLINER;
   }
 
+  /**
+   * Verifica si el artista es telonero (acto de apertura)
+   * @returns true si el rol es TELONERO
+   */
+  public esTelonero(): boolean {
+    return this._rol === RolArtista.TELONERO;
+  }
+
+  /**
+   * Verifica si el artista es invitado
+   * @returns true si el rol es INVITADO
+   */
   public esInvitado(): boolean {
-    return this._rol.toLowerCase().includes('invitado');
+    return this._rol === RolArtista.INVITADO;
+  }
+
+  /**
+   * Verifica si el artista es colaborador
+   * @returns true si el rol es COLABORADOR
+   */
+  public esColaborador(): boolean {
+    return this._rol === RolArtista.COLABORADOR;
   }
 
   public tieneCompensacion(): boolean {
@@ -187,6 +197,20 @@ export class ArtistaEvento {
     return this.getDiasDesdeConfirmacion() <= 7;
   }
 
+  /**
+   * Obtiene el rol formateado en español
+   * @returns Nombre del rol en español
+   */
+  public getRolFormateado(): string {
+    const roles: Record<RolArtista, string> = {
+      [RolArtista.HEADLINER]: 'Headliner',
+      [RolArtista.TELONERO]: 'Telonero',
+      [RolArtista.INVITADO]: 'Invitado',
+      [RolArtista.COLABORADOR]: 'Colaborador'
+    };
+    return roles[this._rol];
+  }
+
   // ==================== CONVERSIÓN DE DATOS ====================
 
   public toJSON(): IArtistaEvento {
@@ -205,7 +229,7 @@ export class ArtistaEvento {
       id: data.id,
       artistaId: data.artista_id || data.artistaId,
       eventoId: data.evento_id || data.eventoId,
-      rol: data.rol,
+      rol: data.rol as RolArtista,
       compensacion: data.compensacion ? Number(data.compensacion) : 0,
       fechaConfirmacion: data.fecha_confirmacion || data.fechaConfirmacion,
     });
