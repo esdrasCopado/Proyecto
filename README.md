@@ -22,7 +22,7 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
 
 Puedes visualizar el diagrama ERD de la base de datos:
 
-![ERD Diagram](https://github.com/esdrasCopado/Proyecto/blob/main/prisma/ERD.svg)
+![ERD Diagram](https://raw.githubusercontent.com/esdrasCopado/Proyecto/cc1f3048c93ef888e6a9d827e974e0a2082fd798/prisma/ERD.svg)
 
 ## Tecnologías
 
