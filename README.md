@@ -6,7 +6,7 @@ Para este proyecto se ha utilizado MySQL como base de datos y TypeScript como le
 ### Segundo Avance: 
 Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Evento, Boleto, Orden), Se crearon los repositorios y 5 pruebas de integracion con 49 tests automaticos.
 
-[![Tests de Integracion](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml/badge.svg)](https://github.com/esdrasCopado/proyecto-eventos/actions/workflows/pruebasIntegracion.yml)
+[![Tests de Integracion](https://github.com/esdrasCopado/Proyecto/actions/workflows/pruebasIntegracion.yml/badge.svg)](https://github.com/esdrasCopado/Proyecto/actions/workflows/pruebasIntegracion.yml)
 
 ## Tabla de Contenidos
 - [Tecnologías](#tecnologías)
@@ -17,6 +17,12 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
 - [Pruebas](#pruebas)
 - [Diagrama ERD](#diagrama-erd)
 - [Troubleshooting](#troubleshooting)
+
+## Diagrama ERD
+
+Puedes visualizar el diagrama ERD de la base de datos:
+
+![ERD Diagram](https://raw.githubusercontent.com/esdrasCopado/Proyecto/cc1f3048c93ef888e6a9d827e974e0a2082fd798/prisma/ERD.svg)
 
 ## Tecnologías
 
@@ -144,11 +150,6 @@ npm run test:models
 npm run test:repositories
 ```
 
-## Diagrama ERD
-
-Puedes visualizar el diagrama ERD de la base de datos:
-
-![ERD Diagram](https://github.com/esdrasCopado/proyecto-eventos/blob/main/prisma/ERD.svg)
 
 ## Troubleshooting
 
