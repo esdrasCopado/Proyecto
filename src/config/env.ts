@@ -20,6 +20,12 @@ const envSchema = z.object({
   LOG_LEVEL: z
     .enum(['error', 'warn', 'info', 'debug'])
     .default('info'),
+
+  // JWT
+  JWT_SECRET: z.string().min(32, 'JWT_SECRET debe tener al menos 32 caracteres'),
+  JWT_EXPIRES_IN: z.string().default('7d'),
+  JWT_REFRESH_SECRET: z.string().min(32, 'JWT_REFRESH_SECRET debe tener al menos 32 caracteres'),
+  JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
 });
 
 // Tipo inferido del schema
@@ -61,4 +67,11 @@ export const appConfig = {
 
 export const logConfig = {
   level: env.LOG_LEVEL,
+};
+
+export const jwtConfig = {
+  secret: env.JWT_SECRET,
+  expiresIn: env.JWT_EXPIRES_IN,
+  refreshSecret: env.JWT_REFRESH_SECRET,
+  refreshExpiresIn: env.JWT_REFRESH_EXPIRES_IN,
 };
