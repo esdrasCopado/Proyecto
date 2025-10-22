@@ -5,43 +5,36 @@ export declare const organizadorSchemas: {
     Organizador: {
         type: string;
         properties: {
-            Nombre: {
+            id: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            nombre: {
                 type: string;
                 description: string;
                 example: string;
             };
-            Contracto: {
+            contacto: {
                 type: string;
                 description: string;
                 example: string;
             };
-            Pais: {
+            pais: {
                 type: string;
                 description: string;
                 example: string;
             };
-            UsuarioId: {
-                type: string;
-                description: string;
-                example: string;
-            };
-            Fundacion: {
+            fundacion: {
                 type: string;
                 format: string;
                 description: string;
                 example: string;
             };
-            createdAt: {
+            usuarioId: {
                 type: string;
-                format: string;
                 description: string;
-                example: string;
-            };
-            updatedAt: {
-                type: string;
-                format: string;
-                description: string;
-                example: string;
+                example: number;
             };
         };
     };
@@ -49,64 +42,57 @@ export declare const organizadorSchemas: {
         type: string;
         required: string[];
         properties: {
-            nombreEmpresa: {
+            nombre: {
                 type: string;
                 minLength: number;
+                description: string;
                 example: string;
             };
-            rfc: {
-                type: string;
-                pattern: string;
-                example: string;
-            };
-            direccion: {
+            contacto: {
                 type: string;
                 minLength: number;
+                description: string;
                 example: string;
             };
-            telefonoEmpresa: {
+            pais: {
                 type: string;
-                pattern: string;
+                minLength: number;
+                description: string;
                 example: string;
             };
-            sitioWeb: {
+            usuarioId: {
                 type: string;
-                format: string;
-                example: string;
+                description: string;
+                example: number;
             };
         };
     };
     OrganizadorUpdate: {
         type: string;
+        required: string[];
         properties: {
-            nombreEmpresa: {
+            id: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            nombre: {
                 type: string;
                 minLength: number;
+                description: string;
                 example: string;
             };
-            rfc: {
-                type: string;
-                pattern: string;
-                example: string;
-            };
-            direccion: {
+            contacto: {
                 type: string;
                 minLength: number;
+                description: string;
                 example: string;
             };
-            telefonoEmpresa: {
+            pais: {
                 type: string;
-                pattern: string;
+                minLength: number;
+                description: string;
                 example: string;
-            };
-            sitioWeb: {
-                type: string;
-                format: string;
-                example: string;
-            };
-            verificado: {
-                type: string;
-                example: boolean;
             };
         };
     };

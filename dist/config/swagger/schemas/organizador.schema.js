@@ -8,108 +8,94 @@ exports.organizadorSchemas = {
     Organizador: {
         type: 'object',
         properties: {
-            Nombre: {
-                type: 'string',
-                description: 'Nombre del organizador',
-                example: 'Juan Pérez',
+            id: {
+                type: 'integer',
+                description: 'ID único del organizador',
+                example: 1,
             },
-            Contracto: {
+            nombre: {
                 type: 'string',
-                description: 'Contacto del organizador',
-                example: 'Numero de teléfono o email',
+                description: 'Nombre del organizador o empresa',
+                example: 'Eventos Premium SA',
             },
-            Pais: {
+            contacto: {
+                type: 'string',
+                description: 'Información de contacto (teléfono o email)',
+                example: 'contacto@eventospremium.com',
+            },
+            pais: {
                 type: 'string',
                 description: 'País del organizador',
                 example: 'México',
             },
-            UsuarioId: {
+            fundacion: {
                 type: 'string',
+                format: 'date-time',
+                description: 'Fecha de fundación',
+                example: '2020-01-01T00:00:00Z',
+            },
+            usuarioId: {
+                type: 'integer',
                 description: 'ID del usuario asociado',
-                example: '345',
-            },
-            Fundacion: {
-                type: 'string',
-                format: 'date',
-                description: 'Fecha de fundación del organizador',
-                example: '2020-01-01',
-            },
-            createdAt: {
-                type: 'string',
-                format: 'date-time',
-                description: 'Fecha de creación',
-                example: '2025-01-15T10:30:00Z',
-            },
-            updatedAt: {
-                type: 'string',
-                format: 'date-time',
-                description: 'Fecha de última actualización',
-                example: '2025-01-20T15:45:00Z',
+                example: 5,
             },
         },
     },
     OrganizadorCreate: {
         type: 'object',
-        required: ['nombreEmpresa', 'rfc', 'direccion', 'telefonoEmpresa'],
+        required: ['nombre', 'contacto', 'pais', 'usuarioId'],
         properties: {
-            nombreEmpresa: {
+            nombre: {
                 type: 'string',
                 minLength: 3,
+                description: 'Nombre del organizador o empresa',
                 example: 'Eventos Premium SA',
             },
-            rfc: {
+            contacto: {
                 type: 'string',
-                pattern: '^[A-Z]{3,4}[0-9]{6}[A-Z0-9]{3}$',
-                example: 'EPR123456ABC',
+                minLength: 5,
+                description: 'Información de contacto (teléfono o email)',
+                example: 'contacto@eventospremium.com',
             },
-            direccion: {
+            pais: {
                 type: 'string',
-                minLength: 10,
-                example: 'Av. Reforma 123, CDMX',
+                minLength: 2,
+                description: 'País del organizador',
+                example: 'México',
             },
-            telefonoEmpresa: {
-                type: 'string',
-                pattern: '^[0-9]{10}$',
-                example: '5551234567',
-            },
-            sitioWeb: {
-                type: 'string',
-                format: 'uri',
-                example: 'https://eventospremium.com',
+            usuarioId: {
+                type: 'integer',
+                description: 'ID del usuario asociado al organizador',
+                example: 5,
             },
         },
     },
     OrganizadorUpdate: {
         type: 'object',
+        required: ['id'],
         properties: {
-            nombreEmpresa: {
+            id: {
+                type: 'integer',
+                description: 'ID del organizador a actualizar',
+                example: 1,
+            },
+            nombre: {
                 type: 'string',
                 minLength: 3,
+                description: 'Nombre del organizador o empresa',
                 example: 'Eventos Premium SA',
             },
-            rfc: {
+            contacto: {
                 type: 'string',
-                pattern: '^[A-Z]{3,4}[0-9]{6}[A-Z0-9]{3}$',
-                example: 'EPR123456ABC',
+                minLength: 5,
+                description: 'Información de contacto (teléfono o email)',
+                example: 'contacto@eventospremium.com',
             },
-            direccion: {
+            pais: {
                 type: 'string',
-                minLength: 10,
-                example: 'Av. Reforma 123, CDMX',
-            },
-            telefonoEmpresa: {
-                type: 'string',
-                pattern: '^[0-9]{10}$',
-                example: '5551234567',
-            },
-            sitioWeb: {
-                type: 'string',
-                format: 'uri',
-                example: 'https://eventospremium.com',
-            },
-            verificado: {
-                type: 'boolean',
-                example: true,
+                minLength: 2,
+                description: 'País del organizador',
+                example: 'México',
             },
         },
     },

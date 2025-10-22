@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { OrganizadoresController } from '../controllers/OrganizadorController';
 import { authenticate } from '../middlewares/auth.middleware';
-import { adminOnly, adminOrOrganizer, authorizeOwnerOrAdmin } from '../middlewares/authorize.middleware';
+import { adminOnly, adminOrOrganizer } from '../middlewares/authorize.middleware';
 
 const router = Router();
 const organizadoresController = new OrganizadoresController();
@@ -131,7 +131,7 @@ router.get('/:id', authenticate, adminOrOrganizer, (req: Request, res: Response)
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.put('/:id', authenticate, authorizeOwnerOrAdmin, (req: Request, res: Response) => organizadoresController.updateOrganizador(req, res));
+router.put('/:id', authenticate, adminOrOrganizer, (req: Request, res: Response) => organizadoresController.updateOrganizador(req, res));
 
 /**
  * @swagger

@@ -29,7 +29,10 @@ export class OrganizadoresController {
 
     async updateOrganizador(req: Request, res: Response) {
         try {
-            const organizador = await this.organizadorService.updateOrganizador(req.body);
+            const organizador = await this.organizadorService.updateOrganizador({
+                id: Number(req.params.id),
+                ...req.body
+            });
             res.status(200).json(organizador);
         } catch (error: any) {
             res.status(500).json({ error: error.message });
