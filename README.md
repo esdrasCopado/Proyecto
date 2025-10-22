@@ -20,7 +20,12 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
 
 ## Videos demostrativos
 ### Video 1: Comprobar Endpoints Usuarios y Autenticación 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7lxVRFZ9j7Q?si=zQh44Ol3VjXg0-ZX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=7lxVRFZ9j7Q">
+    <img src="https://img.youtube.com/vi/7lxVRFZ9j7Q/hqdefault.jpg" alt="Demo en YouTube" width="600">
+  </a>
+</p>
+
 
 
 ## Diagrama ERD
