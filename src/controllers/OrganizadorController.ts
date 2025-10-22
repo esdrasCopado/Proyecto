@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { OrganizadorService } from '@/services/organizadorService';
-import { Organizador } from '@/models/Organizador';
+import { OrganizadorService } from '../services/OrganizadorService';
+import { Organizador } from '../models/Organizador';
 
 export class OrganizadoresController {
     private organizadorService: OrganizadorService;

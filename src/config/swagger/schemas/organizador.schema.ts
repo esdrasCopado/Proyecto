@@ -6,45 +6,31 @@ export const organizadorSchemas = {
     Organizador: {
         type: 'object',
         properties: {
-            id: {
-                type: 'integer',
-                description: 'ID único del organizador',
-                example: 1,
+            Nombre: {
+                type: 'string',
+                description: 'Nombre del organizador',
+                example: 'Juan Pérez',
             },
-            usuarioId: {
-                type: 'integer',
+            Contracto: {
+                type: 'string',
+                description: 'Contacto del organizador',
+                example: 'Numero de teléfono o email',
+            },
+            Pais: {
+                type: 'string',
+                description: 'País del organizador',
+                example: 'México',
+            },
+            UsuarioId: {
+                type: 'string',
                 description: 'ID del usuario asociado',
-                example: 3,
+                example: '345',
             },
-            nombreEmpresa: {
+            Fundacion: {
                 type: 'string',
-                description: 'Nombre de la empresa organizadora',
-                example: 'Eventos Premium SA',
-            },
-            rfc: {
-                type: 'string',
-                description: 'RFC de la empresa',
-                example: 'EPR123456ABC',
-            },
-            direccion: {
-                type: 'string',
-                description: 'Dirección fiscal',
-                example: 'Av. Reforma 123, CDMX',
-            },
-            telefonoEmpresa: {
-                type: 'string',
-                description: 'Teléfono de la empresa',
-                example: '5551234567',
-            },
-            sitioWeb: {
-                type: 'string',
-                description: 'Sitio web de la empresa',
-                example: 'https://eventospremium.com',
-            },
-            verificado: {
-                type: 'boolean',
-                description: 'Indica si el organizador está verificado',
-                example: true,
+                format: 'date',
+                description: 'Fecha de fundación del organizador',
+                example: '2020-01-01',
             },
             createdAt: {
                 type: 'string',

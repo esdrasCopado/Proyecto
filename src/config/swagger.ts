@@ -4,6 +4,7 @@
  */
 
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
 import { appConfig } from './env';
 import { allSchemas, allResponses } from './swagger/schemas';
 
@@ -69,8 +70,11 @@ const options: swaggerJsdoc.Options = {
         ],
     },
     apis: [
-        './src/routes/*.ts',
-        './src/controllers/*.ts',
+        // Buscar archivos tanto .ts (desarrollo) como .js (producción)
+        path.resolve(__dirname, '..', 'routes', '*.ts'),
+        path.resolve(__dirname, '..', 'routes', '*.js'),
+        path.resolve(__dirname, '..', 'controllers', '*.ts'),
+        path.resolve(__dirname, '..', 'controllers', '*.js'),
     ],
 };
 

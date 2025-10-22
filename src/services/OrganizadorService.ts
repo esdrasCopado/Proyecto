@@ -1,5 +1,5 @@
-import { OrganizadorRepository } from "@/repositories/OrganizadorRepository";
-import { Organizador } from "@/models/Organizador";
+import { OrganizadorRepository } from "../repositories/OrganizadorRepository";
+import { Organizador } from "../models/Organizador";
 
 export class OrganizadorService {
     private organizadorRepository: OrganizadorRepository;
@@ -69,5 +69,5 @@ export class OrganizadorService {
             throw new Error(`Error al eliminar el organizador: ${error}`);
         }
     }
-    
+
 }

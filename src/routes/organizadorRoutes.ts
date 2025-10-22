@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { OrganizadoresController } from '../controllers/OrganizadorController';
 import { authenticate } from '../middlewares/auth.middleware';
-import { adminOnly, adminOrOrganizer, authorizeOwnerOrAdmin } from '@/middlewares/authorize.middleware';
+import { adminOnly, adminOrOrganizer, authorizeOwnerOrAdmin } from '../middlewares/authorize.middleware';
 
 const router = Router();
 const organizadoresController = new OrganizadoresController();

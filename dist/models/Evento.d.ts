@@ -1,0 +1,40 @@
+/**
+ * Entidad Evento
+ */
+export interface IEvento {
+    id?: number;
+    nombre: string;
+    descripcion?: string;
+    fecha: Date;
+    ubicacion: string;
+    organizadorId: number;
+}
+export declare class Evento {
+    private _id?;
+    private _nombre;
+    private _descripcion;
+    private _fecha;
+    private _ubicacion;
+    private _organizadorId;
+    constructor(data: IEvento);
+    get id(): number | undefined;
+    get nombre(): string;
+    get descripcion(): string;
+    get fecha(): Date;
+    get ubicacion(): string;
+    get organizadorId(): number;
+    set nombre(value: string);
+    set descripcion(value: string);
+    set fecha(value: Date | string);
+    set ubicacion(value: string);
+    set organizadorId(value: number);
+    private validar;
+    private static validarNombre;
+    private static validarDescripcion;
+    private static validarFecha;
+    private static validarUbicacion;
+    private static validarId;
+    static fromDatabase(data: any): Evento;
+    toJSON(): IEvento;
+}
+//# sourceMappingURL=Evento.d.ts.map

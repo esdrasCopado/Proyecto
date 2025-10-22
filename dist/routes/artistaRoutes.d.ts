@@ -1,0 +1,1 @@
+//# sourceMappingURL=artistaRoutes.d.ts.map

@@ -18,6 +18,14 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
 - [Diagrama ERD](#diagrama-erd)
 - [Troubleshooting](#troubleshooting)
 
+## Videos demostrativos
+<p align="center">
+  <a href="https://youtu.be/7lxVRFZ9j7Q">
+    <img src="https://img.youtube.com/vi/7lxVRFZ9j7Q/hqdefault.jpg" alt="Demo en YouTube" width="600">
+  </a>
+</p>
+
+
 ## Diagrama ERD
 
 Puedes visualizar el diagrama ERD de la base de datos:
