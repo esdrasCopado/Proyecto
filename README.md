@@ -19,10 +19,16 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
 - [Troubleshooting](#troubleshooting)
 
 ## Videos demostrativos
-### Video 1: Comprobar Endpoints Usuarios y Autenticación 
+### Video: Comprobar Endpoints Usuarios y Autenticación 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=7lxVRFZ9j7Q">
     <img src="https://img.youtube.com/vi/7lxVRFZ9j7Q/hqdefault.jpg" alt="Demo en YouTube" width="600">
+  </a>
+</p>
+### Video: Comprobar Endpoints Eventos y Organizadores
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=pyLGgCF4LLc">
+    <img src="https://img.youtube.com/vi/pyLGgCF4LLc/hqdefault.jpg" alt="Demo en YouTube" width="600">
   </a>
 </p>
 
