@@ -1,6 +1,6 @@
-import { BoletoRepository } from "@/repositories/boletoRepository";
-import { Boleto, IBoleto } from "@/models/Boleto";
-import { TipoBoleto } from "@/types/enums";
+import { BoletoRepository } from "../repositories/boletoRepository";
+import { Boleto, IBoleto } from "../models/Boleto";
+import { TipoBoleto } from "../types/enums";
 
 export class BoletoService {
     private boletoRepository: BoletoRepository;
@@ -48,6 +48,7 @@ export class BoletoService {
         disponible: boolean;
         eventoId: number;
         usuarioId?: number;
+        ordenId?: number;
     }): Promise<IBoleto> {
         // Validar datos de entrada
         this.validarDatosBoleto(boletoData);
@@ -58,6 +59,7 @@ export class BoletoService {
             disponible: boletoData.disponible,
             eventoId: boletoData.eventoId,
             usuarioId: boletoData.usuarioId,
+            ordenId: boletoData.ordenId,
         });
 
         // El repositorio maneja sus propios errores
@@ -244,6 +246,99 @@ export class BoletoService {
         });
 
         return estadisticas;
+    }
+
+    /**
+     * Crea boletos en lote para un evento
+     * Permite crear cientos o miles de boletos de manera eficiente
+     *
+     * @param eventoId - ID del evento
+     * @param configuraciones - Array de configuraciones de boletos por tipo
+     * @returns Cantidad de boletos creados
+     *
+     * @example
+     * crearBoletosEnLote(1, [
+     *   { tipo: 'VIP', cantidad: 50, precio: 500 },
+     *   { tipo: 'GENERAL', cantidad: 200, precio: 150 }
+     * ]) // Crea 250 boletos: 50 VIP y 200 GENERAL
+     */
+    async crearBoletosEnLote(
+        eventoId: number,
+        configuraciones: Array<{
+            tipo: string;
+            cantidad: number;
+            precio: number;
+        }>
+    ): Promise<{
+        totalCreados: number;
+        detalles: Array<{
+            tipo: string;
+            cantidad: number;
+            precio: number;
+        }>;
+    }> {
+        // Validar evento
+        if (eventoId <= 0) {
+            throw new Error('El ID del evento debe ser válido');
+        }
+
+        // Validar que haya configuraciones
+        if (!configuraciones || configuraciones.length === 0) {
+            throw new Error('Debe proporcionar al menos una configuración de boletos');
+        }
+
+        // Validar cada configuración
+        configuraciones.forEach((config, index) => {
+            if (!config.tipo || !config.cantidad || !config.precio) {
+                throw new Error(`Configuración ${index + 1}: Faltan campos requeridos (tipo, cantidad, precio)`);
+            }
+
+            if (config.cantidad <= 0) {
+                throw new Error(`Configuración ${index + 1}: La cantidad debe ser mayor a 0`);
+            }
+
+            if (config.precio <= 0) {
+                throw new Error(`Configuración ${index + 1}: El precio debe ser mayor a 0`);
+            }
+
+            // Validar tipo de boleto
+            this.validarTipoBoleto(config.tipo);
+        });
+
+        // Calcular total de boletos a crear
+        const totalBoletos = configuraciones.reduce((sum, config) => sum + config.cantidad, 0);
+
+        // Validar límite razonable (prevenir creación masiva accidental)
+        if (totalBoletos > 100000) {
+            throw new Error(`No se pueden crear más de 100,000 boletos a la vez. Solicitó: ${totalBoletos}`);
+        }
+
+        // Generar array de boletos
+        const boletos: IBoleto[] = [];
+
+        for (const config of configuraciones) {
+            for (let i = 0; i < config.cantidad; i++) {
+                const boleto = new Boleto({
+                    precio: config.precio,
+                    tipo: config.tipo as TipoBoleto,
+                    disponible: true,
+                    eventoId: eventoId,
+                });
+                boletos.push(boleto);
+            }
+        }
+
+        // Crear boletos en lote usando el repositorio
+        const cantidadCreada = await this.boletoRepository.crearEnLote(boletos);
+
+        return {
+            totalCreados: cantidadCreada,
+            detalles: configuraciones.map(config => ({
+                tipo: config.tipo,
+                cantidad: config.cantidad,
+                precio: config.precio,
+            })),
+        };
     }
 }
 

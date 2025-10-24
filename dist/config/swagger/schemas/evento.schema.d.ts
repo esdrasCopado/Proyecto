@@ -13,11 +13,13 @@ export declare const eventoSchemas: {
             nombre: {
                 type: string;
                 description: string;
+                maxLength: number;
                 example: string;
             };
             descripcion: {
                 type: string;
                 description: string;
+                maxLength: number;
                 example: string;
             };
             fecha: {
@@ -26,44 +28,16 @@ export declare const eventoSchemas: {
                 description: string;
                 example: string;
             };
-            lugar: {
+            ubicacion: {
                 type: string;
                 description: string;
-                example: string;
-            };
-            capacidad: {
-                type: string;
-                description: string;
-                example: number;
-            };
-            precio: {
-                type: string;
-                format: string;
-                description: string;
-                example: number;
-            };
-            estado: {
-                type: string;
-                enum: string[];
-                description: string;
+                maxLength: number;
                 example: string;
             };
             organizadorId: {
                 type: string;
                 description: string;
                 example: number;
-            };
-            createdAt: {
-                type: string;
-                format: string;
-                description: string;
-                example: string;
-            };
-            updatedAt: {
-                type: string;
-                format: string;
-                description: string;
-                example: string;
             };
         };
     };
@@ -74,31 +48,33 @@ export declare const eventoSchemas: {
             nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             descripcion: {
                 type: string;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             fecha: {
                 type: string;
                 format: string;
+                description: string;
                 example: string;
             };
-            lugar: {
+            ubicacion: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            capacidad: {
+            organizadorId: {
                 type: string;
                 minimum: number;
-                example: number;
-            };
-            precio: {
-                type: string;
-                format: string;
-                minimum: number;
+                description: string;
                 example: number;
             };
         };
@@ -109,37 +85,34 @@ export declare const eventoSchemas: {
             nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             descripcion: {
                 type: string;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             fecha: {
                 type: string;
                 format: string;
+                description: string;
                 example: string;
             };
-            lugar: {
+            ubicacion: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            capacidad: {
+            organizadorId: {
                 type: string;
                 minimum: number;
+                description: string;
                 example: number;
-            };
-            precio: {
-                type: string;
-                format: string;
-                minimum: number;
-                example: number;
-            };
-            estado: {
-                type: string;
-                enum: string[];
-                example: string;
             };
         };
     };

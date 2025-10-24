@@ -14,6 +14,7 @@ class BoletoRepository {
             disponible: boleto.disponible,
             eventoId: boleto.eventoId,
             usuarioId: boleto.usuarioId || null,
+            ordenId: boleto.ordenId || null,
         };
     }
     async crear(boleto) {
@@ -105,6 +106,29 @@ class BoletoRepository {
         }
         catch (error) {
             throw new Error(`Error al eliminar boletos por evento: ${error.message}`);
+        }
+    }
+    /**
+     * Crea múltiples boletos en lote (para eventos con muchos boletos)
+     * Usa createMany para optimizar la creación masiva
+     */
+    async crearEnLote(boletos) {
+        try {
+            const boletosData = boletos.map(boleto => this.toBoletoData(boleto));
+            const result = await database_1.default.boleto.createMany({
+                data: boletosData,
+                skipDuplicates: false, // No permitir duplicados
+            });
+            return result.count;
+        }
+        catch (error) {
+            if (error.code === 'P2002') {
+                throw new Error('Algunos boletos ya existen (violación de restricción única)');
+            }
+            if (error.code === 'P2003') {
+                throw new Error('El evento especificado no existe');
+            }
+            throw new Error(`Error al crear boletos en lote: ${error.message}`);
         }
     }
 }

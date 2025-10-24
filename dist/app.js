@@ -7,9 +7,11 @@ const express_1 = __importDefault(require("express"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const routes_1 = __importDefault(require("./routes"));
 const swagger_1 = require("./config/swagger");
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 // Middlewares
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 // Swagger UI
 app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec, {
     explorer: true,

@@ -25,6 +25,7 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
     <img src="https://img.youtube.com/vi/7lxVRFZ9j7Q/hqdefault.jpg" alt="Demo en YouTube" width="600">
   </a>
 </p>
+
 ### Video: Comprobar Endpoints Eventos y Organizadores
 <p align="center">
   <a href="https://www.youtube.com/watch?v=pyLGgCF4LLc">

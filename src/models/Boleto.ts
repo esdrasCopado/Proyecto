@@ -12,6 +12,7 @@ export interface IBoleto {
   disponible: boolean;
   eventoId: number;
   usuarioId?: number | null;
+  ordenId?: number | null;
 }
 
 export class Boleto {
@@ -21,6 +22,7 @@ export class Boleto {
   private _disponible: boolean;
   private _eventoId: number;
   private _usuarioId?: number | null;
+  private _ordenId?: number | null;
 
   constructor(data: IBoleto) {
     this._id = data.id;
@@ -29,6 +31,7 @@ export class Boleto {
     this._disponible = data.disponible;
     this._eventoId = data.eventoId;
     this._usuarioId = data.usuarioId;
+    this._ordenId = data.ordenId;
 
     this.validar();
   }
@@ -57,6 +60,10 @@ export class Boleto {
 
   get usuarioId(): number | null | undefined {
     return this._usuarioId;
+  }
+
+  get ordenId(): number | null | undefined {
+    return this._ordenId;
   }
 
   // ==================== SETTERS ====================
@@ -89,6 +96,12 @@ export class Boleto {
     }
     this._usuarioId = value;
   }
+  set ordenId(value: number | null | undefined) {
+    if (value !== null && value !== undefined && !Boleto.validarId(value)) {
+      throw new Error('ID de orden inválido');
+    }
+    this._ordenId = value;
+  }
 
   // ==================== VALIDACIONES ====================
 
@@ -106,6 +119,11 @@ export class Boleto {
     if (this._usuarioId !== null && this._usuarioId !== undefined) {
       if (!Boleto.validarId(this._usuarioId)) {
         throw new Error('ID de usuario inválido');
+      }
+    }
+    if (this._ordenId !== null && this._ordenId !== undefined) {
+      if (!Boleto.validarId(this._ordenId)) {
+        throw new Error('ID de orden inválido');
       }
     }
   }

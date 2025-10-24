@@ -9,5 +9,10 @@ export declare class BoletoRepository implements IBoletoRepository {
     eliminar(id: number): Promise<boolean>;
     buscarPorEvento(eventoId: number): Promise<IBoleto[]>;
     eliminarPorEvento(eventoId: number): Promise<number>;
+    /**
+     * Crea múltiples boletos en lote (para eventos con muchos boletos)
+     * Usa createMany para optimizar la creación masiva
+     */
+    crearEnLote(boletos: IBoleto[]): Promise<number>;
 }
 //# sourceMappingURL=boletoRepository.d.ts.map

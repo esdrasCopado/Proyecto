@@ -80,5 +80,11 @@ export declare class BoletoController {
      * Verifica si hay suficientes boletos disponibles
      */
     verificarDisponibilidad: (req: Request, res: Response) => Promise<Response>;
+    /**
+     * POST /api/boletos/lote
+     * Crea boletos en lote para un evento
+     * Permite crear cientos o miles de boletos de manera eficiente
+     */
+    crearBoletosEnLote: (req: Request, res: Response) => Promise<Response>;
 }
-//# sourceMappingURL=BoletoController.d.ts.map
+//# sourceMappingURL=boletoController.d.ts.map

@@ -13,12 +13,12 @@ class BoletoController {
          */
         this.crearBoleto = async (req, res) => {
             try {
-                const { precio, tipo, disponible, eventoId, usuarioId } = req.body;
+                const { precio, tipo, disponible, eventoId, usuarioId, ordenId } = req.body;
                 // Validación básica
                 if (!precio || !tipo || disponible === undefined || !eventoId) {
                     return this.errorResponse(res, new Error('Faltan campos requeridos: precio, tipo, disponible, eventoId'), 400);
                 }
-                const boletoData = { precio, tipo, disponible, eventoId, usuarioId };
+                const boletoData = { precio, tipo, disponible, eventoId, usuarioId, ordenId };
                 const nuevoBoleto = await this.boletoService.crearBoleto(boletoData);
                 return this.successResponse(res, nuevoBoleto, 'Boleto creado exitosamente', 201);
             }
@@ -205,6 +205,28 @@ class BoletoController {
                 return this.errorResponse(res, error);
             }
         };
+        /**
+         * POST /api/boletos/lote
+         * Crea boletos en lote para un evento
+         * Permite crear cientos o miles de boletos de manera eficiente
+         */
+        this.crearBoletosEnLote = async (req, res) => {
+            try {
+                const { eventoId, configuraciones } = req.body;
+                // Validación básica
+                if (!eventoId || !configuraciones) {
+                    return this.errorResponse(res, new Error('Faltan campos requeridos: eventoId, configuraciones'), 400);
+                }
+                if (!Array.isArray(configuraciones) || configuraciones.length === 0) {
+                    return this.errorResponse(res, new Error('configuraciones debe ser un array con al menos un elemento'), 400);
+                }
+                const resultado = await this.boletoService.crearBoletosEnLote(eventoId, configuraciones);
+                return this.successResponse(res, resultado, `${resultado.totalCreados} boletos creados exitosamente`, 201);
+            }
+            catch (error) {
+                return this.errorResponse(res, error);
+            }
+        };
         this.boletoService = new BoletoService_1.BoletoService();
     }
     /**
@@ -254,4 +276,4 @@ class BoletoController {
     }
 }
 exports.BoletoController = BoletoController;
-//# sourceMappingURL=BoletoController.js.map
+//# sourceMappingURL=boletoController.js.map

@@ -19,6 +19,7 @@ export declare class BoletoService {
         disponible: boolean;
         eventoId: number;
         usuarioId?: number;
+        ordenId?: number;
     }): Promise<IBoleto>;
     /**
      * Obtiene un boleto por su ID
@@ -72,6 +73,32 @@ export declare class BoletoService {
         disponibles: number;
         vendidos: number;
         porTipo: Record<string, number>;
+    }>;
+    /**
+     * Crea boletos en lote para un evento
+     * Permite crear cientos o miles de boletos de manera eficiente
+     *
+     * @param eventoId - ID del evento
+     * @param configuraciones - Array de configuraciones de boletos por tipo
+     * @returns Cantidad de boletos creados
+     *
+     * @example
+     * crearBoletosEnLote(1, [
+     *   { tipo: 'VIP', cantidad: 50, precio: 500 },
+     *   { tipo: 'GENERAL', cantidad: 200, precio: 150 }
+     * ]) // Crea 250 boletos: 50 VIP y 200 GENERAL
+     */
+    crearBoletosEnLote(eventoId: number, configuraciones: Array<{
+        tipo: string;
+        cantidad: number;
+        precio: number;
+    }>): Promise<{
+        totalCreados: number;
+        detalles: Array<{
+            tipo: string;
+            cantidad: number;
+            precio: number;
+        }>;
     }>;
 }
 //# sourceMappingURL=BoletoService.d.ts.map

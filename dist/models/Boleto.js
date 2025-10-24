@@ -14,6 +14,7 @@ class Boleto {
         this._disponible = data.disponible;
         this._eventoId = data.eventoId;
         this._usuarioId = data.usuarioId;
+        this._ordenId = data.ordenId;
         this.validar();
     }
     // ==================== GETTERS ====================
@@ -34,6 +35,9 @@ class Boleto {
     }
     get usuarioId() {
         return this._usuarioId;
+    }
+    get ordenId() {
+        return this._ordenId;
     }
     // ==================== SETTERS ====================
     set precio(value) {
@@ -60,6 +64,12 @@ class Boleto {
         }
         this._usuarioId = value;
     }
+    set ordenId(value) {
+        if (value !== null && value !== undefined && !Boleto.validarId(value)) {
+            throw new Error('ID de orden inválido');
+        }
+        this._ordenId = value;
+    }
     // ==================== VALIDACIONES ====================
     /**
      * Valida la instancia completa del boleto
@@ -75,6 +85,11 @@ class Boleto {
         if (this._usuarioId !== null && this._usuarioId !== undefined) {
             if (!Boleto.validarId(this._usuarioId)) {
                 throw new Error('ID de usuario inválido');
+            }
+        }
+        if (this._ordenId !== null && this._ordenId !== undefined) {
+            if (!Boleto.validarId(this._ordenId)) {
+                throw new Error('ID de orden inválido');
             }
         }
     }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { BoletoService } from '@/services/BoletoService';
+import { BoletoService } from '../services/BoletoService';
 
 /**
  * Controlador para gestión de boletos
@@ -64,7 +64,7 @@ export class BoletoController {
      */
     public crearBoleto = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { precio, tipo, disponible, eventoId, usuarioId } = req.body;
+            const { precio, tipo, disponible, eventoId, usuarioId, ordenId } = req.body;
 
             // Validación básica
             if (!precio || !tipo || disponible === undefined || !eventoId) {
@@ -74,7 +74,7 @@ export class BoletoController {
                 );
             }
 
-            const boletoData = { precio, tipo, disponible, eventoId, usuarioId };
+            const boletoData = { precio, tipo, disponible, eventoId, usuarioId, ordenId };
             const nuevoBoleto = await this.boletoService.crearBoleto(boletoData);
 
             return this.successResponse(res, nuevoBoleto, 'Boleto creado exitosamente', 201);
@@ -296,6 +296,43 @@ export class BoletoController {
                 hayDisponibilidad
                     ? `Hay ${cantidad} boletos disponibles`
                     : `No hay suficientes boletos disponibles`
+            );
+        } catch (error: any) {
+            return this.errorResponse(res, error);
+        }
+    };
+
+    /**
+     * POST /api/boletos/lote
+     * Crea boletos en lote para un evento
+     * Permite crear cientos o miles de boletos de manera eficiente
+     */
+    public crearBoletosEnLote = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const { eventoId, configuraciones } = req.body;
+
+            // Validación básica
+            if (!eventoId || !configuraciones) {
+                return this.errorResponse(res,
+                    new Error('Faltan campos requeridos: eventoId, configuraciones'),
+                    400
+                );
+            }
+
+            if (!Array.isArray(configuraciones) || configuraciones.length === 0) {
+                return this.errorResponse(res,
+                    new Error('configuraciones debe ser un array con al menos un elemento'),
+                    400
+                );
+            }
+
+            const resultado = await this.boletoService.crearBoletosEnLote(eventoId, configuraciones);
+
+            return this.successResponse(
+                res,
+                resultado,
+                `${resultado.totalCreados} boletos creados exitosamente`,
+                201
             );
         } catch (error: any) {
             return this.errorResponse(res, error);

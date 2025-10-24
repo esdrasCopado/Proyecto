@@ -69,13 +69,7 @@ export declare const organizadorSchemas: {
     };
     OrganizadorUpdate: {
         type: string;
-        required: string[];
         properties: {
-            id: {
-                type: string;
-                description: string;
-                example: number;
-            };
             nombre: {
                 type: string;
                 minLength: number;

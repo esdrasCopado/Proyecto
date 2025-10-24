@@ -10,6 +10,7 @@ export interface IBoleto {
     disponible: boolean;
     eventoId: number;
     usuarioId?: number | null;
+    ordenId?: number | null;
 }
 export declare class Boleto {
     private _id?;
@@ -18,6 +19,7 @@ export declare class Boleto {
     private _disponible;
     private _eventoId;
     private _usuarioId?;
+    private _ordenId?;
     constructor(data: IBoleto);
     get id(): number | undefined;
     get precio(): number;
@@ -25,11 +27,13 @@ export declare class Boleto {
     get disponible(): boolean;
     get eventoId(): number;
     get usuarioId(): number | null | undefined;
+    get ordenId(): number | null | undefined;
     set precio(value: number);
     set tipo(value: TipoBoleto);
     set disponible(value: boolean);
     set eventoId(value: number);
     set usuarioId(value: number | null | undefined);
+    set ordenId(value: number | null | undefined);
     /**
      * Valida la instancia completa del boleto
      * @throws Error si algún dato es inválido

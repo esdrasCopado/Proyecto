@@ -72,24 +72,18 @@ exports.organizadorSchemas = {
     },
     OrganizadorUpdate: {
         type: 'object',
-        required: ['id'],
         properties: {
-            id: {
-                type: 'integer',
-                description: 'ID del organizador a actualizar',
-                example: 1,
-            },
             nombre: {
                 type: 'string',
                 minLength: 3,
                 description: 'Nombre del organizador o empresa',
-                example: 'Eventos Premium SA',
+                example: 'Eventos Premium SA Actualizado',
             },
             contacto: {
                 type: 'string',
                 minLength: 5,
                 description: 'Información de contacto (teléfono o email)',
-                example: 'contacto@eventospremium.com',
+                example: 'nuevo-contacto@eventospremium.com',
             },
             pais: {
                 type: 'string',

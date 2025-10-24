@@ -129,7 +129,7 @@ router.get('/:id', auth_middleware_1.authenticate, authorize_middleware_1.adminO
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.put('/:id', auth_middleware_1.authenticate, authorize_middleware_1.authorizeOwnerOrAdmin, (req, res) => organizadoresController.updateOrganizador(req, res));
+router.put('/:id', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, (req, res) => organizadoresController.updateOrganizador(req, res));
 /**
  * @swagger
  * /api/organizadores/{id}:
