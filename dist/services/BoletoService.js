@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BoletoService = void 0;
-const boletoRepository_1 = require("@/repositories/boletoRepository");
-const Boleto_1 = require("@/models/Boleto");
-const enums_1 = require("@/types/enums");
+const boletoRepository_1 = require("../repositories/boletoRepository");
+const Boleto_1 = require("../models/Boleto");
+const enums_1 = require("../types/enums");
 class BoletoService {
     constructor() {
         this.boletoRepository = new boletoRepository_1.BoletoRepository();

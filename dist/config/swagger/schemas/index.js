@@ -4,7 +4,7 @@
  * Agrupa y exporta todos los schemas y respuestas
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.commonResponses = exports.commonSchemas = exports.boletoSchemas = exports.organizadorSchemas = exports.artistaSchemas = exports.eventoSchemas = exports.usuarioSchemas = exports.allResponses = exports.allSchemas = void 0;
+exports.commonResponses = exports.commonSchemas = exports.ordenSchemas = exports.boletoSchemas = exports.organizadorSchemas = exports.artistaSchemas = exports.eventoSchemas = exports.usuarioSchemas = exports.allResponses = exports.allSchemas = void 0;
 const usuario_schema_1 = require("./usuario.schema");
 Object.defineProperty(exports, "usuarioSchemas", { enumerable: true, get: function () { return usuario_schema_1.usuarioSchemas; } });
 const evento_schema_1 = require("./evento.schema");
@@ -15,6 +15,8 @@ const organizador_schema_1 = require("./organizador.schema");
 Object.defineProperty(exports, "organizadorSchemas", { enumerable: true, get: function () { return organizador_schema_1.organizadorSchemas; } });
 const boleto_shema_1 = require("./boleto.shema");
 Object.defineProperty(exports, "boletoSchemas", { enumerable: true, get: function () { return boleto_shema_1.boletoSchemas; } });
+const orden_schema_1 = require("./orden.schema");
+Object.defineProperty(exports, "ordenSchemas", { enumerable: true, get: function () { return orden_schema_1.ordenSchemas; } });
 const common_schema_1 = require("./common.schema");
 Object.defineProperty(exports, "commonSchemas", { enumerable: true, get: function () { return common_schema_1.commonSchemas; } });
 Object.defineProperty(exports, "commonResponses", { enumerable: true, get: function () { return common_schema_1.commonResponses; } });
@@ -25,6 +27,7 @@ exports.allSchemas = {
     ...artista_schema_1.artistaSchemas,
     ...organizador_schema_1.organizadorSchemas,
     ...boleto_shema_1.boletoSchemas,
+    ...orden_schema_1.ordenSchemas,
     ...common_schema_1.commonSchemas,
 };
 // Exportar respuestas comunes

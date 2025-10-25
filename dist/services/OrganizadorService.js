@@ -8,19 +8,22 @@ class OrganizadorService {
         this.organizadorRepository = new OrganizadorRepository_1.OrganizadorRepository();
     }
     async createOrganizador(organizadorData) {
-        try {
-            const organizador = new Organizador_1.Organizador({
-                nombre: organizadorData.nombre,
-                contacto: organizadorData.contacto,
-                pais: organizadorData.pais,
-                fundacion: new Date(),
-                usuarioId: organizadorData.usuarioId,
-            });
-            return await this.organizadorRepository.create(organizador);
+        // Validar datos de entrada
+        if (!organizadorData.nombre || !organizadorData.contacto || !organizadorData.pais) {
+            throw new Error('Faltan campos requeridos: nombre, contacto, pais');
         }
-        catch (error) {
-            throw new Error(`Error al crear el organizador: ${error}`);
+        if (!organizadorData.usuarioId || organizadorData.usuarioId <= 0) {
+            throw new Error('El ID del usuario es requerido y debe ser válido');
         }
+        const organizador = new Organizador_1.Organizador({
+            nombre: organizadorData.nombre,
+            contacto: organizadorData.contacto,
+            pais: organizadorData.pais,
+            fundacion: new Date(),
+            usuarioId: organizadorData.usuarioId,
+        });
+        // No envolver el error, dejarlo pasar tal cual viene del repositorio
+        return await this.organizadorRepository.create(organizador);
     }
     async getOrganizadorById(id) {
         try {

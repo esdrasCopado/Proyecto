@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BoletoController = void 0;
-const BoletoService_1 = require("@/services/BoletoService");
+const BoletoService_1 = require("../services/BoletoService");
 /**
  * Controlador para gestión de boletos
  */
@@ -276,4 +276,4 @@ class BoletoController {
     }
 }
 exports.BoletoController = BoletoController;
-//# sourceMappingURL=boletoController.js.map
+//# sourceMappingURL=BoletoController.js.map

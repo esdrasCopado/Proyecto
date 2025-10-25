@@ -87,4 +87,4 @@ export declare class BoletoController {
      */
     crearBoletosEnLote: (req: Request, res: Response) => Promise<Response>;
 }
-//# sourceMappingURL=boletoController.d.ts.map
+//# sourceMappingURL=BoletoController.d.ts.map

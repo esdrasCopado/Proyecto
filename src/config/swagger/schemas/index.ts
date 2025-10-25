@@ -8,6 +8,7 @@ import { eventoSchemas } from './evento.schema';
 import { artistaSchemas } from './artista.schema';
 import { organizadorSchemas } from './organizador.schema';
 import { boletoSchemas } from './boleto.shema';
+import { ordenSchemas } from './orden.schema';
 import { commonSchemas, commonResponses } from './common.schema';
 
 // Combinar todos los schemas
@@ -17,6 +18,7 @@ export const allSchemas = {
     ...artistaSchemas,
     ...organizadorSchemas,
     ...boletoSchemas,
+    ...ordenSchemas,
     ...commonSchemas,
 };
 
@@ -30,6 +32,7 @@ export {
     artistaSchemas,
     organizadorSchemas,
     boletoSchemas,
+    ordenSchemas,
     commonSchemas,
     commonResponses,
 };

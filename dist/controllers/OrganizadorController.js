@@ -9,10 +9,28 @@ class OrganizadoresController {
     async createOrganizador(req, res) {
         try {
             const organizador = await this.organizadorService.createOrganizador(req.body);
-            res.status(201).json(organizador);
+            res.status(201).json({
+                success: true,
+                message: 'Organizador creado exitosamente',
+                data: organizador
+            });
         }
         catch (error) {
-            res.status(500).json({ error: error.message });
+            // Determinar el código de estado apropiado
+            let statusCode = 500;
+            if (error.message.includes('ya es un organizador')) {
+                statusCode = 409; // Conflict
+            }
+            else if (error.message.includes('no existe')) {
+                statusCode = 404; // Not Found
+            }
+            else if (error.message.includes('requerido') || error.message.includes('válido')) {
+                statusCode = 400; // Bad Request
+            }
+            res.status(statusCode).json({
+                success: false,
+                message: error.message
+            });
         }
     }
     async getOrganizadorById(req, res) {

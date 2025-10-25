@@ -1,4 +1,4 @@
-import { IBoleto } from "@/models/Boleto";
+import { IBoleto } from "../models/Boleto";
 export declare class BoletoService {
     private boletoRepository;
     constructor();

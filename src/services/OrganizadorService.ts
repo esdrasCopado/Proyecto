@@ -14,18 +14,25 @@ export class OrganizadorService {
         pais: string;
         usuarioId: number;
     }) {
-        try {
-            const organizador = new Organizador({
-                nombre: organizadorData.nombre,
-                contacto: organizadorData.contacto,
-                pais: organizadorData.pais,
-                fundacion: new Date(),
-                usuarioId: organizadorData.usuarioId,
-            });
-            return await this.organizadorRepository.create(organizador);
-        } catch (error: any) {
-            throw new Error(`Error al crear el organizador: ${error}`);
+        // Validar datos de entrada
+        if (!organizadorData.nombre || !organizadorData.contacto || !organizadorData.pais) {
+            throw new Error('Faltan campos requeridos: nombre, contacto, pais');
         }
+
+        if (!organizadorData.usuarioId || organizadorData.usuarioId <= 0) {
+            throw new Error('El ID del usuario es requerido y debe ser válido');
+        }
+
+        const organizador = new Organizador({
+            nombre: organizadorData.nombre,
+            contacto: organizadorData.contacto,
+            pais: organizadorData.pais,
+            fundacion: new Date(),
+            usuarioId: organizadorData.usuarioId,
+        });
+
+        // No envolver el error, dejarlo pasar tal cual viene del repositorio
+        return await this.organizadorRepository.create(organizador);
     }
     async getOrganizadorById(id: number) {
         try {

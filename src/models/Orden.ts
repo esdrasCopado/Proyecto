@@ -129,9 +129,12 @@ export class Orden {
         return new Orden({
             id: data.id,
             total: Number(data.total),
-            fechaCompra: new Date(data.fechaCompra),
+            fechaCompra: new Date(data.fecha || data.fechaCompra), // Prisma usa 'fecha', el modelo usa 'fechaCompra'
             usuarioId: data.usuarioId || data.usuario_id,
-            boletos: Array.isArray(data.boletos) ? data.boletos.map((b: any) => Number(b)) : [],
+            boletos: Array.isArray(data.boletos) ? data.boletos.map((b: any) => {
+                // Si el boleto es un objeto, extraer el ID
+                return typeof b === 'object' && b.id ? Number(b.id) : Number(b);
+            }) : [],
             estado: data.estado as EstadoOrden,
         });
     }
