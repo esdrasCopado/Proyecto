@@ -4,7 +4,7 @@ import eventoRoutes from './eventoRoutes';
 import organizadorRoutes from './organizadorRoutes';
 import boletoRoutes from './boletoRoutes';
 import ordenRoutes from './ordenRoutes';
-// import artistaRoutes from './artistaRoutes';
+import artistaRoutes from './artistaRoutes';
 
 const router = Router();
 
@@ -13,6 +13,6 @@ router.use('/eventos', eventoRoutes);
 router.use('/organizadores', organizadorRoutes);
 router.use('/boletos', boletoRoutes);
 router.use('/ordenes', ordenRoutes);
-// router.use('/artistas', artistaRoutes); // TODO: Implementar ArtistaController
+router.use('/artistas', artistaRoutes);
 
 export default router;
