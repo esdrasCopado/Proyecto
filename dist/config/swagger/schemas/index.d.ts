@@ -5,6 +5,7 @@
 import { usuarioSchemas } from './usuario.schema';
 import { eventoSchemas } from './evento.schema';
 import { artistaSchemas } from './artista.schema';
+import { artistaEventoSchemas } from './artistaEvento.schema';
 import { organizadorSchemas } from './organizador.schema';
 import { boletoSchemas } from './boleto.shema';
 import { ordenSchemas } from './orden.schema';
@@ -489,6 +490,95 @@ export declare const allSchemas: {
             };
         };
     };
+    ArtistaEvento: {
+        type: string;
+        properties: {
+            id: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            artistaId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            eventoId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            rol: {
+                type: string;
+                enum: string[];
+                description: string;
+                example: string;
+            };
+            compensacion: {
+                type: string;
+                format: string;
+                description: string;
+                example: number;
+            };
+            fechaConfirmacion: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+        };
+    };
+    ArtistaEventoCreate: {
+        type: string;
+        required: string[];
+        properties: {
+            artistaId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            eventoId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            rol: {
+                type: string;
+                enum: string[];
+                description: string;
+                example: string;
+            };
+            compensacion: {
+                type: string;
+                format: string;
+                description: string;
+                example: number;
+            };
+            fechaConfirmacion: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+        };
+    };
+    ArtistaEventoUpdate: {
+        type: string;
+        properties: {
+            rol: {
+                type: string;
+                enum: string[];
+                description: string;
+                example: string;
+            };
+            compensacion: {
+                type: string;
+                format: string;
+                description: string;
+                example: number;
+            };
+        };
+    };
     Artista: {
         type: string;
         properties: {
@@ -938,5 +1028,5 @@ export declare const allResponses: {
         };
     };
 };
-export { usuarioSchemas, eventoSchemas, artistaSchemas, organizadorSchemas, boletoSchemas, ordenSchemas, commonSchemas, commonResponses, };
+export { usuarioSchemas, eventoSchemas, artistaSchemas, artistaEventoSchemas, organizadorSchemas, boletoSchemas, ordenSchemas, commonSchemas, commonResponses, };
 //# sourceMappingURL=index.d.ts.map

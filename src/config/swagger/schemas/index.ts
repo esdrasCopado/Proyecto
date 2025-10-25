@@ -6,6 +6,7 @@
 import { usuarioSchemas } from './usuario.schema';
 import { eventoSchemas } from './evento.schema';
 import { artistaSchemas } from './artista.schema';
+import { artistaEventoSchemas } from './artistaEvento.schema';
 import { organizadorSchemas } from './organizador.schema';
 import { boletoSchemas } from './boleto.shema';
 import { ordenSchemas } from './orden.schema';
@@ -16,6 +17,7 @@ export const allSchemas = {
     ...usuarioSchemas,
     ...eventoSchemas,
     ...artistaSchemas,
+    ...artistaEventoSchemas,
     ...organizadorSchemas,
     ...boletoSchemas,
     ...ordenSchemas,
@@ -30,6 +32,7 @@ export {
     usuarioSchemas,
     eventoSchemas,
     artistaSchemas,
+    artistaEventoSchemas,
     organizadorSchemas,
     boletoSchemas,
     ordenSchemas,

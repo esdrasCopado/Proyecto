@@ -33,7 +33,12 @@ Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Ev
   </a>
 </p>
 
-
+### Video: Comprobar Endpoints Eventos
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=SsYJ6qtHkjk">
+    <img src="https://img.youtube.com/vi/SsYJ6qtHkjk/hqdefault.jpg" alt="Demo en YouTube" width="600">
+  </a>
+</p>
 
 ## Diagrama ERD
 

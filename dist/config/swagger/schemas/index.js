@@ -4,13 +4,15 @@
  * Agrupa y exporta todos los schemas y respuestas
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.commonResponses = exports.commonSchemas = exports.ordenSchemas = exports.boletoSchemas = exports.organizadorSchemas = exports.artistaSchemas = exports.eventoSchemas = exports.usuarioSchemas = exports.allResponses = exports.allSchemas = void 0;
+exports.commonResponses = exports.commonSchemas = exports.ordenSchemas = exports.boletoSchemas = exports.organizadorSchemas = exports.artistaEventoSchemas = exports.artistaSchemas = exports.eventoSchemas = exports.usuarioSchemas = exports.allResponses = exports.allSchemas = void 0;
 const usuario_schema_1 = require("./usuario.schema");
 Object.defineProperty(exports, "usuarioSchemas", { enumerable: true, get: function () { return usuario_schema_1.usuarioSchemas; } });
 const evento_schema_1 = require("./evento.schema");
 Object.defineProperty(exports, "eventoSchemas", { enumerable: true, get: function () { return evento_schema_1.eventoSchemas; } });
 const artista_schema_1 = require("./artista.schema");
 Object.defineProperty(exports, "artistaSchemas", { enumerable: true, get: function () { return artista_schema_1.artistaSchemas; } });
+const artistaEvento_schema_1 = require("./artistaEvento.schema");
+Object.defineProperty(exports, "artistaEventoSchemas", { enumerable: true, get: function () { return artistaEvento_schema_1.artistaEventoSchemas; } });
 const organizador_schema_1 = require("./organizador.schema");
 Object.defineProperty(exports, "organizadorSchemas", { enumerable: true, get: function () { return organizador_schema_1.organizadorSchemas; } });
 const boleto_shema_1 = require("./boleto.shema");
@@ -25,6 +27,7 @@ exports.allSchemas = {
     ...usuario_schema_1.usuarioSchemas,
     ...evento_schema_1.eventoSchemas,
     ...artista_schema_1.artistaSchemas,
+    ...artistaEvento_schema_1.artistaEventoSchemas,
     ...organizador_schema_1.organizadorSchemas,
     ...boleto_shema_1.boletoSchemas,
     ...orden_schema_1.ordenSchemas,
