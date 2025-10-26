@@ -14,6 +14,8 @@ export interface IUsuario {
   telefono: string;
   fechaRegistro?: Date | string;
   rol?: Role;
+  artistaId?: number | null;
+  organizadorId?: number | null;
 }
 
 export class Usuario {
@@ -25,6 +27,8 @@ export class Usuario {
   private _telefono: string;
   private _fechaRegistro: Date;
   private _rol: Role;
+  private _artistaId?: number | null;
+  private _organizadorId?: number | null;
 
   constructor(data: IUsuario) {
     this._id = data.id;
@@ -34,6 +38,8 @@ export class Usuario {
     this._apellidos = data.apellidos;
     this._telefono = data.telefono;
     this._rol = data.rol || Role.USER;
+    this._artistaId = data.artistaId;
+    this._organizadorId = data.organizadorId;
 
     // Convertir fechaRegistro a Date si viene como string
     if (data.fechaRegistro) {
@@ -79,6 +85,14 @@ export class Usuario {
 
   get rol(): Role {
     return this._rol;
+  }
+
+  get artistaId(): number | null | undefined {
+    return this._artistaId;
+  }
+
+  get organizadorId(): number | null | undefined {
+    return this._organizadorId;
   }
 
   // ==================== SETTERS ====================
@@ -326,6 +340,8 @@ export class Usuario {
       telefono: this._telefono,
       fechaRegistro: this._fechaRegistro,
       rol: this._rol,
+      artistaId: this._artistaId,
+      organizadorId: this._organizadorId,
     };
   }
 
@@ -344,6 +360,8 @@ export class Usuario {
       telefono: data.telefono,
       fechaRegistro: data.fechaRegistro || data.fecha_registro,
       rol: data.rol,
+      artistaId: data.artista?.id || null,
+      organizadorId: data.organizador?.id || null,
     });
   }
 

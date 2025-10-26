@@ -379,11 +379,20 @@ class UsuarioController {
                     email: usuario.email,
                     rol: usuario.rol
                 });
+                // Preparar datos del usuario con IDs según el rol
+                const usuarioData = this.sanitizarUsuario(usuario);
+                const userData = {
+                    ...usuarioData,
+                };
+                // Agregar adminId si es ADMIN (usa el mismo userId)
+                if (usuario.rol === 'ADMIN') {
+                    userData.adminId = usuario.id;
+                }
                 res.status(200).json({
                     success: true,
                     message: 'Login exitoso',
                     data: {
-                        user: this.sanitizarUsuario(usuario),
+                        user: userData,
                         tokens: {
                             accessToken,
                             refreshToken

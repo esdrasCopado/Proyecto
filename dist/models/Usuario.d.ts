@@ -12,6 +12,8 @@ export interface IUsuario {
     telefono: string;
     fechaRegistro?: Date | string;
     rol?: Role;
+    artistaId?: number | null;
+    organizadorId?: number | null;
 }
 export declare class Usuario {
     private _id?;
@@ -22,6 +24,8 @@ export declare class Usuario {
     private _telefono;
     private _fechaRegistro;
     private _rol;
+    private _artistaId?;
+    private _organizadorId?;
     constructor(data: IUsuario);
     get id(): number | undefined;
     get email(): string;
@@ -31,6 +35,8 @@ export declare class Usuario {
     get telefono(): string;
     get fechaRegistro(): Date;
     get rol(): Role;
+    get artistaId(): number | null | undefined;
+    get organizadorId(): number | null | undefined;
     set email(value: string);
     set password(value: string);
     set nombre(value: string);

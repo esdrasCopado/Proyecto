@@ -87,7 +87,8 @@ class Evento {
         return typeof nombre === 'string' && nombre.trim().length > 0 && nombre.length <= 200;
     }
     static validarDescripcion(descripcion) {
-        return typeof descripcion === 'string' && descripcion.trim().length > 0 && descripcion.length <= 500;
+        // Permitir descripción vacía (es opcional) o hasta 2000 caracteres
+        return typeof descripcion === 'string' && descripcion.length <= 2000;
     }
     static validarFecha(fecha) {
         return fecha instanceof Date && !isNaN(fecha.getTime());

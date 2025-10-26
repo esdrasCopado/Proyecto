@@ -115,7 +115,8 @@ export class Evento {
 
     }
     private static validarDescripcion(descripcion: string): boolean {
-        return typeof descripcion === 'string' && descripcion.trim().length > 0 && descripcion.length <= 500;
+        // Permitir descripción vacía (es opcional) o hasta 2000 caracteres
+        return typeof descripcion === 'string' && descripcion.length <= 2000;
 
     }
     private static validarFecha(fecha: Date): boolean {

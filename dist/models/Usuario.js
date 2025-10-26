@@ -15,6 +15,8 @@ class Usuario {
         this._apellidos = data.apellidos;
         this._telefono = data.telefono;
         this._rol = data.rol || enums_1.Role.USER;
+        this._artistaId = data.artistaId;
+        this._organizadorId = data.organizadorId;
         // Convertir fechaRegistro a Date si viene como string
         if (data.fechaRegistro) {
             this._fechaRegistro = typeof data.fechaRegistro === 'string'
@@ -50,6 +52,12 @@ class Usuario {
     }
     get rol() {
         return this._rol;
+    }
+    get artistaId() {
+        return this._artistaId;
+    }
+    get organizadorId() {
+        return this._organizadorId;
     }
     // ==================== SETTERS ====================
     set email(value) {
@@ -270,6 +278,8 @@ class Usuario {
             telefono: this._telefono,
             fechaRegistro: this._fechaRegistro,
             rol: this._rol,
+            artistaId: this._artistaId,
+            organizadorId: this._organizadorId,
         };
     }
     /**
@@ -287,6 +297,8 @@ class Usuario {
             telefono: data.telefono,
             fechaRegistro: data.fechaRegistro || data.fecha_registro,
             rol: data.rol,
+            artistaId: data.artista?.id || null,
+            organizadorId: data.organizador?.id || null,
         });
     }
     /**

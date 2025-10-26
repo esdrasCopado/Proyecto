@@ -155,7 +155,11 @@ export class UsuarioRepository implements IUserRepository {
     async findByEmail(email: string): Promise<Usuario | null> {
         try {
             const usuario = await prisma.usuario.findFirst({
-                where: { email }
+                where: { email },
+                include: {
+                    artista: true,
+                    organizador: true
+                }
             });
 
             if (!usuario) {

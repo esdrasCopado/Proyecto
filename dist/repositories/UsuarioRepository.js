@@ -154,7 +154,11 @@ class UsuarioRepository {
     async findByEmail(email) {
         try {
             const usuario = await database_1.default.usuario.findFirst({
-                where: { email }
+                where: { email },
+                include: {
+                    artista: true,
+                    organizador: true
+                }
             });
             if (!usuario) {
                 return null;
