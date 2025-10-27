@@ -1,6 +1,6 @@
 import { ArtistaEventoRepository } from '../repositories/artistaEventoRepository';
 import { ArtistaRepository } from '../repositories/artistaRepository';
-import { EventoRepository } from '../repositories/eventoRepository';
+import { EventoRepository } from '../repositories/EventoRepository';
 import { ArtistaEvento, IArtistaEvento } from '../models/ArtistaEvento';
 import { RolArtista } from '../types/enums';
 

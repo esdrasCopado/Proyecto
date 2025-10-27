@@ -101,6 +101,7 @@ model Evento {
   descripcion String?  @db.Text
   fecha       DateTime
   ubicacion   String
+  imagenUrl   String?  @map("imagen_url")
 
   //relaciones
   boletos       Boleto[]

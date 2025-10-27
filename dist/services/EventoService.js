@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventoService = void 0;
-const eventoRepository_1 = require("../repositories/eventoRepository");
+const EventoRepository_1 = require("../repositories/EventoRepository");
 const Evento_1 = require("../models/Evento");
 /**
  * Servicio para la gestión de eventos
@@ -9,7 +9,7 @@ const Evento_1 = require("../models/Evento");
  */
 class EventoService {
     constructor() {
-        this.eventoRepository = new eventoRepository_1.EventoRepository();
+        this.eventoRepository = new EventoRepository_1.EventoRepository();
     }
     /**
      * Valida los datos del evento
@@ -51,6 +51,7 @@ class EventoService {
             fecha: typeof eventoData.fecha === 'string' ? new Date(eventoData.fecha) : eventoData.fecha,
             ubicacion: eventoData.ubicacion,
             organizadorId: eventoData.organizadorId,
+            imagenUrl: eventoData.imagenUrl,
         });
         // Guardar en el repositorio
         const eventoCreado = await this.eventoRepository.save(evento);
@@ -113,6 +114,9 @@ class EventoService {
         if (datosActualizar.organizadorId !== undefined && datosActualizar.organizadorId <= 0) {
             throw new Error('El ID del organizador debe ser válido');
         }
+        if (datosActualizar.imagenUrl !== undefined && datosActualizar.imagenUrl.length > 500) {
+            throw new Error('La URL de la imagen no puede exceder 500 caracteres');
+        }
         // Crear evento actualizado
         const eventoActualizado = new Evento_1.Evento({
             id,
@@ -123,6 +127,7 @@ class EventoService {
                 : eventoActual.fecha,
             ubicacion: datosActualizar.ubicacion ?? eventoActual.ubicacion,
             organizadorId: datosActualizar.organizadorId ?? eventoActual.organizadorId,
+            imagenUrl: datosActualizar.imagenUrl ?? eventoActual.imagenUrl,
         });
         const resultado = await this.eventoRepository.update(eventoActualizado);
         return resultado.toJSON();

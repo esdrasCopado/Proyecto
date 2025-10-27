@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArtistaEventoService = void 0;
 const artistaEventoRepository_1 = require("../repositories/artistaEventoRepository");
 const artistaRepository_1 = require("../repositories/artistaRepository");
-const eventoRepository_1 = require("../repositories/eventoRepository");
+const EventoRepository_1 = require("../repositories/EventoRepository");
 const ArtistaEvento_1 = require("../models/ArtistaEvento");
 const enums_1 = require("../types/enums");
 /**
@@ -14,7 +14,7 @@ class ArtistaEventoService {
     constructor() {
         this.artistaEventoRepository = new artistaEventoRepository_1.ArtistaEventoRepository();
         this.artistaRepository = new artistaRepository_1.ArtistaRepository();
-        this.eventoRepository = new eventoRepository_1.EventoRepository();
+        this.eventoRepository = new EventoRepository_1.EventoRepository();
     }
     /**
      * Valida que el artista y evento existan antes de asignar

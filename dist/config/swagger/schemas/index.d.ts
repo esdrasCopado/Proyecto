@@ -758,6 +758,13 @@ export declare const allSchemas: {
                 description: string;
                 example: number;
             };
+            imagenUrl: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+                nullable: boolean;
+            };
         };
     };
     EventoCreate: {

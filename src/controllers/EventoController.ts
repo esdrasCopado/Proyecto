@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { EventoService } from '../services/EventoService';
+import path from 'path';
+import fs from 'fs';
 
 /**
  * Controlador para gestión de eventos
@@ -70,16 +72,36 @@ export class EventoController {
                 );
             }
 
+            // Convertir organizadorId a número (viene como string en multipart/form-data)
+            const organizadorIdNumero = parseInt(organizadorId);
+            if (isNaN(organizadorIdNumero) || organizadorIdNumero <= 0) {
+                return this.errorResponse(res,
+                    new Error('El organizadorId debe ser un número válido mayor a 0'),
+                    400
+                );
+            }
+
+            // Obtener la URL de la imagen si fue subida
+            let imagenUrl: string | undefined;
+            if (req.file) {
+                imagenUrl = `/uploads/eventos/${req.file.filename}`;
+            }
+
             const nuevoEvento = await this.eventoService.crearEvento({
                 nombre,
                 descripcion,
                 fecha,
                 ubicacion,
-                organizadorId
+                organizadorId: organizadorIdNumero,
+                imagenUrl
             });
 
             return this.successResponse(res, nuevoEvento, 'Evento creado exitosamente', 201);
         } catch (error: any) {
+            // Eliminar archivo si hubo error
+            if (req.file) {
+                fs.unlinkSync(req.file.path);
+            }
             return this.errorResponse(res, error);
         }
     };
@@ -125,27 +147,63 @@ export class EventoController {
             const eventoId = this.validarNumero(req.params.id, 'ID del evento');
             const { nombre, descripcion, fecha, ubicacion, organizadorId } = req.body;
 
-            if (!nombre && !descripcion && !fecha && !ubicacion && !organizadorId) {
+            // Filtrar campos vacíos (multipart envía strings vacíos)
+            const datosActualizar: any = {};
+
+            if (nombre && nombre.trim() !== '') {
+                datosActualizar.nombre = nombre;
+            }
+            if (descripcion !== undefined && descripcion !== null && descripcion !== '') {
+                datosActualizar.descripcion = descripcion;
+            }
+            if (fecha && fecha.trim() !== '') {
+                datosActualizar.fecha = fecha;
+            }
+            if (ubicacion && ubicacion.trim() !== '') {
+                datosActualizar.ubicacion = ubicacion;
+            }
+            if (organizadorId && organizadorId.toString().trim() !== '') {
+                datosActualizar.organizadorId = parseInt(organizadorId);
+            }
+
+            // Verificar que haya al menos un campo para actualizar
+            if (Object.keys(datosActualizar).length === 0 && !req.file) {
                 return this.errorResponse(res,
                     new Error('Debe proporcionar al menos un campo para actualizar'),
                     400
                 );
             }
 
-            const eventoActualizado = await this.eventoService.actualizarEvento(eventoId, {
-                nombre,
-                descripcion,
-                fecha,
-                ubicacion,
-                organizadorId
-            });
+            // Obtener la URL de la imagen si fue subida
+            if (req.file) {
+                datosActualizar.imagenUrl = `/uploads/eventos/${req.file.filename}`;
+
+                // Eliminar imagen anterior si existe
+                const eventoActual = await this.eventoService.obtenerEventoPorId(eventoId);
+                if (eventoActual?.imagenUrl) {
+                    const oldImagePath = path.join(__dirname, '../../', eventoActual.imagenUrl);
+                    if (fs.existsSync(oldImagePath)) {
+                        fs.unlinkSync(oldImagePath);
+                    }
+                }
+            }
+
+            const eventoActualizado = await this.eventoService.actualizarEvento(eventoId, datosActualizar);
 
             if (!eventoActualizado) {
+                // Eliminar archivo subido si el evento no existe
+                if (req.file) {
+                    fs.unlinkSync(req.file.path);
+                }
                 return this.errorResponse(res, new Error('Evento no encontrado'), 404);
             }
 
             return this.successResponse(res, eventoActualizado, 'Evento actualizado exitosamente');
         } catch (error: any) {
+            // Eliminar archivo si hubo error
+            if (req.file) {
+                fs.unlinkSync(req.file.path);
+            }
             return this.errorResponse(res, error);
         }
     };
@@ -157,6 +215,21 @@ export class EventoController {
     public delete = async (req: Request, res: Response): Promise<Response> => {
         try {
             const eventoId = this.validarNumero(req.params.id, 'ID del evento');
+
+            // Obtener evento para eliminar su imagen si existe
+            const evento = await this.eventoService.obtenerEventoPorId(eventoId);
+            if (!evento) {
+                return this.errorResponse(res, new Error('Evento no encontrado'), 404);
+            }
+
+            // Eliminar imagen del sistema de archivos si existe
+            if (evento.imagenUrl) {
+                const imagePath = path.join(__dirname, '../../', evento.imagenUrl);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+            }
+
             const eliminado = await this.eventoService.eliminarEvento(eventoId);
 
             if (!eliminado) {

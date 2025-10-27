@@ -6,6 +6,12 @@ Para este proyecto se ha utilizado MySQL como base de datos y TypeScript como le
 ### Segundo Avance: 
 Se realizó la implementación de los modelos (Usuario, Artista, Organizador, Evento, Boleto, Orden), Se crearon los repositorios y 5 pruebas de integracion con 49 tests automaticos.
 
+### Tercer Avance:
+Se implementaron los controladores y rutas correspondientes a los endpoints de Usuarios, Autenticación, Organizadores, Eventos, Boletos, Órdenes y Artistas.
+Asimismo, se integró Swagger para la documentación y prueba de la API.
+Se añadieron validaciones con Zod y se implementaron middlewares de seguridad utilizando Helmet y CORS.
+Finalmente, se elaboraron tres videos demostrativos para mostrar el funcionamiento de los endpoints desarrollados.
+
 [![Tests de Integracion](https://github.com/esdrasCopado/Proyecto/actions/workflows/pruebasIntegracion.yml/badge.svg)](https://github.com/esdrasCopado/Proyecto/actions/workflows/pruebasIntegracion.yml)
 
 ## Tabla de Contenidos

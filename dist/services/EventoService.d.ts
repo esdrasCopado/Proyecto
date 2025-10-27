@@ -19,6 +19,7 @@ export declare class EventoService {
         fecha: Date | string;
         ubicacion: string;
         organizadorId: number;
+        imagenUrl?: string;
     }): Promise<IEvento>;
     /**
      * Obtiene un evento por su ID
@@ -37,6 +38,7 @@ export declare class EventoService {
         fecha?: Date | string;
         ubicacion?: string;
         organizadorId?: number;
+        imagenUrl?: string;
     }): Promise<IEvento | null>;
     /**
      * Elimina un evento

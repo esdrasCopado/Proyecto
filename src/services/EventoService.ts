@@ -1,4 +1,4 @@
-import { EventoRepository } from '../repositories/eventoRepository';
+import { EventoRepository } from '../repositories/EventoRepository';
 import { Evento, IEvento } from '../models/Evento';
 
 /**
@@ -60,6 +60,7 @@ export class EventoService {
         fecha: Date | string;
         ubicacion: string;
         organizadorId: number;
+        imagenUrl?: string;
     }): Promise<IEvento> {
         // Validar datos
         this.validarDatosEvento(eventoData);
@@ -71,6 +72,7 @@ export class EventoService {
             fecha: typeof eventoData.fecha === 'string' ? new Date(eventoData.fecha) : eventoData.fecha,
             ubicacion: eventoData.ubicacion,
             organizadorId: eventoData.organizadorId,
+            imagenUrl: eventoData.imagenUrl,
         });
 
         // Guardar en el repositorio
@@ -107,6 +109,7 @@ export class EventoService {
         fecha?: Date | string;
         ubicacion?: string;
         organizadorId?: number;
+        imagenUrl?: string;
     }): Promise<IEvento | null> {
         if (id <= 0) {
             throw new Error('El ID del evento debe ser válido');
@@ -150,6 +153,10 @@ export class EventoService {
             throw new Error('El ID del organizador debe ser válido');
         }
 
+        if (datosActualizar.imagenUrl !== undefined && datosActualizar.imagenUrl.length > 500) {
+            throw new Error('La URL de la imagen no puede exceder 500 caracteres');
+        }
+
         // Crear evento actualizado
         const eventoActualizado = new Evento({
             id,
@@ -160,6 +167,7 @@ export class EventoService {
                 : eventoActual.fecha,
             ubicacion: datosActualizar.ubicacion ?? eventoActual.ubicacion,
             organizadorId: datosActualizar.organizadorId ?? eventoActual.organizadorId,
+            imagenUrl: datosActualizar.imagenUrl ?? eventoActual.imagenUrl,
         });
 
         const resultado = await this.eventoRepository.update(eventoActualizado);

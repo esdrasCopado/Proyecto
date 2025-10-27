@@ -9,6 +9,7 @@ export interface IEvento {
     fecha: Date;
     ubicacion: string;
     organizadorId: number;
+    imagenUrl?: string;
 }
 
 export class Evento {
@@ -18,6 +19,7 @@ export class Evento {
     private _fecha: Date;
     private _ubicacion: string;
     private _organizadorId: number;
+    private _imagenUrl: string;
 
     constructor(data: IEvento) {
         this._id = data.id;
@@ -26,6 +28,7 @@ export class Evento {
         this._fecha = data.fecha instanceof Date ? data.fecha : new Date(data.fecha);
         this._ubicacion = data.ubicacion;
         this._organizadorId = data.organizadorId;
+        this._imagenUrl = data.imagenUrl || '';
         this.validar();
     }
     // ==================== GETTERS ====================
@@ -52,6 +55,10 @@ export class Evento {
 
     get organizadorId(): number {
         return this._organizadorId;
+    }
+
+    get imagenUrl(): string {
+        return this._imagenUrl;
     }
 
     // ==================== SETTERS ====================
@@ -90,6 +97,13 @@ export class Evento {
             throw new Error('ID de organizador inválido');
         }
         this._organizadorId = value;
+    }
+
+    set imagenUrl(value: string) {
+        if (!Evento.validarImagenUrl(value)) {
+            throw new Error('URL de imagen inválida');
+        }
+        this._imagenUrl = value.trim();
     }
 
     // ==================== VALIDACIONES ====================
@@ -132,6 +146,11 @@ export class Evento {
         return typeof id === 'number' && id > 0 && Number.isInteger(id);
     }
 
+    private static validarImagenUrl(imagenUrl: string): boolean {
+        // Permitir URL vacía (es opcional) o hasta 500 caracteres
+        return typeof imagenUrl === 'string' && imagenUrl.length <= 500;
+    }
+
     // ==================== CONVERSORES ====================
     public static fromDatabase(data: any): Evento {
         return new Evento({
@@ -140,7 +159,8 @@ export class Evento {
             descripcion: data.descripcion,
             fecha: data.fecha,
             ubicacion: data.ubicacion,
-            organizadorId: data.organizadorId || data.organizador_id
+            organizadorId: data.organizadorId || data.organizador_id,
+            imagenUrl: data.imagenUrl || data.imagen_url
         });
     }
 
@@ -151,7 +171,8 @@ export class Evento {
             descripcion: this._descripcion,
             fecha: this._fecha,
             ubicacion: this._ubicacion,
-            organizadorId: this._organizadorId
+            organizadorId: this._organizadorId,
+            imagenUrl: this._imagenUrl
         };
     }
 }

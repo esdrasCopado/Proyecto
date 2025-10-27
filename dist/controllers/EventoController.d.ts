@@ -73,4 +73,4 @@ export declare class EventoController {
      */
     getCount: (req: Request, res: Response) => Promise<Response>;
 }
-//# sourceMappingURL=EventoController.d.ts.map
+//# sourceMappingURL=eventoController.d.ts.map

@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { EventoController } from '../controllers/EventoController';
+import { EventoController } from '../controllers/eventoController';
 import { authenticate } from '../middlewares/auth.middleware';
 import { adminOnly, adminOrOrganizer } from '../middlewares/authorize.middleware';
+import { uploadEvento, handleMulterError } from '../config/multer';
 
 const router = Router();
 const eventoController = new EventoController();
@@ -18,9 +19,33 @@ const eventoController = new EventoController();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/EventoCreate'
+ *             type: object
+ *             required:
+ *               - nombre
+ *               - fecha
+ *               - ubicacion
+ *               - organizadorId
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 maxLength: 200
+ *               descripcion:
+ *                 type: string
+ *                 maxLength: 2000
+ *               fecha:
+ *                 type: string
+ *                 format: date-time
+ *               ubicacion:
+ *                 type: string
+ *                 maxLength: 300
+ *               organizadorId:
+ *                 type: integer
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *                 description: Imagen del evento (max 5MB - JPEG, PNG, GIF, WEBP)
  *     responses:
  *       201:
  *         description: Evento creado exitosamente
@@ -44,7 +69,7 @@ const eventoController = new EventoController();
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.post('/', authenticate, adminOrOrganizer, (req, res) => eventoController.create(req, res));
+router.post('/', authenticate, adminOrOrganizer, uploadEvento.single('imagen'), handleMulterError, (req: any, res: any) => eventoController.create(req, res));
 
 /**
  * @swagger
@@ -318,9 +343,28 @@ router.get('/:id', (req, res) => eventoController.findById(req, res));
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/EventoUpdate'
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 maxLength: 200
+ *               descripcion:
+ *                 type: string
+ *                 maxLength: 2000
+ *               fecha:
+ *                 type: string
+ *                 format: date-time
+ *               ubicacion:
+ *                 type: string
+ *                 maxLength: 300
+ *               organizadorId:
+ *                 type: integer
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *                 description: Nueva imagen del evento (max 5MB - JPEG, PNG, GIF, WEBP)
  *     responses:
  *       200:
  *         description: Evento actualizado exitosamente
@@ -344,7 +388,7 @@ router.get('/:id', (req, res) => eventoController.findById(req, res));
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.put('/:id', authenticate, adminOrOrganizer, (req, res) => eventoController.update(req, res));
+router.put('/:id', authenticate, adminOrOrganizer, uploadEvento.single('imagen'), handleMulterError, (req: any, res: any) => eventoController.update(req, res));
 
 /**
  * @swagger

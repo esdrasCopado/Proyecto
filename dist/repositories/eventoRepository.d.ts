@@ -12,4 +12,4 @@ export declare class EventoRepository implements IEventoRepository {
     findPasados(limite?: number): Promise<Evento[]>;
     count(): Promise<number>;
 }
-//# sourceMappingURL=eventoRepository.d.ts.map
+//# sourceMappingURL=EventoRepository.d.ts.map

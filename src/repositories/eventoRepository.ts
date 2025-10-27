@@ -12,6 +12,7 @@ export class EventoRepository implements IEventoRepository {
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
                     organizadorId: evento.organizadorId,
+                    imagenUrl: evento.imagenUrl || null,
                 },
             });
             return Evento.fromDatabase(newEvento);
@@ -42,6 +43,7 @@ export class EventoRepository implements IEventoRepository {
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
                     organizadorId: evento.organizadorId,
+                    imagenUrl: evento.imagenUrl || null,
                 },
             });
             return Evento.fromDatabase(updatedEvento);

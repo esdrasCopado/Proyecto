@@ -12,6 +12,7 @@ class Evento {
         this._fecha = data.fecha instanceof Date ? data.fecha : new Date(data.fecha);
         this._ubicacion = data.ubicacion;
         this._organizadorId = data.organizadorId;
+        this._imagenUrl = data.imagenUrl || '';
         this.validar();
     }
     // ==================== GETTERS ====================
@@ -32,6 +33,9 @@ class Evento {
     }
     get organizadorId() {
         return this._organizadorId;
+    }
+    get imagenUrl() {
+        return this._imagenUrl;
     }
     // ==================== SETTERS ====================
     set nombre(value) {
@@ -64,6 +68,12 @@ class Evento {
             throw new Error('ID de organizador inválido');
         }
         this._organizadorId = value;
+    }
+    set imagenUrl(value) {
+        if (!Evento.validarImagenUrl(value)) {
+            throw new Error('URL de imagen inválida');
+        }
+        this._imagenUrl = value.trim();
     }
     // ==================== VALIDACIONES ====================
     validar() {
@@ -99,6 +109,10 @@ class Evento {
     static validarId(id) {
         return typeof id === 'number' && id > 0 && Number.isInteger(id);
     }
+    static validarImagenUrl(imagenUrl) {
+        // Permitir URL vacía (es opcional) o hasta 500 caracteres
+        return typeof imagenUrl === 'string' && imagenUrl.length <= 500;
+    }
     // ==================== CONVERSORES ====================
     static fromDatabase(data) {
         return new Evento({
@@ -107,7 +121,8 @@ class Evento {
             descripcion: data.descripcion,
             fecha: data.fecha,
             ubicacion: data.ubicacion,
-            organizadorId: data.organizadorId || data.organizador_id
+            organizadorId: data.organizadorId || data.organizador_id,
+            imagenUrl: data.imagenUrl || data.imagen_url
         });
     }
     toJSON() {
@@ -117,7 +132,8 @@ class Evento {
             descripcion: this._descripcion,
             fecha: this._fecha,
             ubicacion: this._ubicacion,
-            organizadorId: this._organizadorId
+            organizadorId: this._organizadorId,
+            imagenUrl: this._imagenUrl
         };
     }
 }

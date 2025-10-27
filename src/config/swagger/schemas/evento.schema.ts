@@ -40,6 +40,13 @@ export const eventoSchemas = {
                 description: 'ID del organizador del evento',
                 example: 1,
             },
+            imagenUrl: {
+                type: 'string',
+                description: 'URL de la imagen del evento',
+                maxLength: 500,
+                example: '/uploads/eventos/festival-musica-1234567890.jpg',
+                nullable: true,
+            },
         },
     },
 

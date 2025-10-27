@@ -3,12 +3,16 @@ import swaggerUi from 'swagger-ui-express';
 import routes from './routes';
 import { swaggerSpec } from './config/swagger';
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
 app.use(cors());
+
+// Servir archivos estáticos (imágenes de eventos)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 
 

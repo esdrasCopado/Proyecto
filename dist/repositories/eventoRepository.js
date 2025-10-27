@@ -16,6 +16,7 @@ class EventoRepository {
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
                     organizadorId: evento.organizadorId,
+                    imagenUrl: evento.imagenUrl || null,
                 },
             });
             return Evento_1.Evento.fromDatabase(newEvento);
@@ -48,6 +49,7 @@ class EventoRepository {
                     fecha: evento.fecha,
                     ubicacion: evento.ubicacion,
                     organizadorId: evento.organizadorId,
+                    imagenUrl: evento.imagenUrl || null,
                 },
             });
             return Evento_1.Evento.fromDatabase(updatedEvento);
@@ -166,4 +168,4 @@ class EventoRepository {
     }
 }
 exports.EventoRepository = EventoRepository;
-//# sourceMappingURL=eventoRepository.js.map
+//# sourceMappingURL=EventoRepository.js.map

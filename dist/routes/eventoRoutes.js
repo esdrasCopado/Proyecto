@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const EventoController_1 = require("../controllers/EventoController");
+const eventoController_1 = require("../controllers/eventoController");
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const authorize_middleware_1 = require("../middlewares/authorize.middleware");
+const multer_1 = require("../config/multer");
 const router = (0, express_1.Router)();
-const eventoController = new EventoController_1.EventoController();
+const eventoController = new eventoController_1.EventoController();
 /**
  * @swagger
  * /api/eventos:
@@ -18,9 +19,33 @@ const eventoController = new EventoController_1.EventoController();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/EventoCreate'
+ *             type: object
+ *             required:
+ *               - nombre
+ *               - fecha
+ *               - ubicacion
+ *               - organizadorId
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 maxLength: 200
+ *               descripcion:
+ *                 type: string
+ *                 maxLength: 2000
+ *               fecha:
+ *                 type: string
+ *                 format: date-time
+ *               ubicacion:
+ *                 type: string
+ *                 maxLength: 300
+ *               organizadorId:
+ *                 type: integer
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *                 description: Imagen del evento (max 5MB - JPEG, PNG, GIF, WEBP)
  *     responses:
  *       201:
  *         description: Evento creado exitosamente
@@ -44,7 +69,7 @@ const eventoController = new EventoController_1.EventoController();
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.post('/', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, (req, res) => eventoController.create(req, res));
+router.post('/', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, multer_1.uploadEvento.single('imagen'), multer_1.handleMulterError, (req, res) => eventoController.create(req, res));
 /**
  * @swagger
  * /api/eventos:
@@ -309,9 +334,28 @@ router.get('/:id', (req, res) => eventoController.findById(req, res));
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/EventoUpdate'
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 maxLength: 200
+ *               descripcion:
+ *                 type: string
+ *                 maxLength: 2000
+ *               fecha:
+ *                 type: string
+ *                 format: date-time
+ *               ubicacion:
+ *                 type: string
+ *                 maxLength: 300
+ *               organizadorId:
+ *                 type: integer
+ *               imagen:
+ *                 type: string
+ *                 format: binary
+ *                 description: Nueva imagen del evento (max 5MB - JPEG, PNG, GIF, WEBP)
  *     responses:
  *       200:
  *         description: Evento actualizado exitosamente
@@ -335,7 +379,7 @@ router.get('/:id', (req, res) => eventoController.findById(req, res));
  *       403:
  *         $ref: '#/components/responses/ForbiddenError'
  */
-router.put('/:id', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, (req, res) => eventoController.update(req, res));
+router.put('/:id', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, multer_1.uploadEvento.single('imagen'), multer_1.handleMulterError, (req, res) => eventoController.update(req, res));
 /**
  * @swagger
  * /api/eventos/{id}:
