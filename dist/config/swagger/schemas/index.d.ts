@@ -9,6 +9,8 @@ import { artistaEventoSchemas } from './artistaEvento.schema';
 import { organizadorSchemas } from './organizador.schema';
 import { boletoSchemas } from './boleto.shema';
 import { ordenSchemas } from './orden.schema';
+import { albumSchemas } from './album.schema';
+import { songSchemas } from './song.schema';
 import { commonSchemas, commonResponses } from './common.schema';
 export declare const allSchemas: {
     SuccessResponse: {
@@ -62,6 +64,241 @@ export declare const allSchemas: {
             };
             totalPages: {
                 type: string;
+                example: number;
+            };
+        };
+    };
+    Song: {
+        type: string;
+        properties: {
+            id: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            fontImageUrl: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+            };
+            videoUrl: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+                nullable: boolean;
+            };
+            titulo: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+            };
+            duracion: {
+                type: string;
+                description: string;
+                example: number;
+                minimum: number;
+                maximum: number;
+            };
+            albumId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+        };
+    };
+    SongCreate: {
+        type: string;
+        required: string[];
+        properties: {
+            fontImageUrl: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            videoUrl: {
+                type: string;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            titulo: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            duracion: {
+                type: string;
+                minimum: number;
+                maximum: number;
+                description: string;
+                example: number;
+            };
+            albumId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
+            };
+        };
+    };
+    SongUpdate: {
+        type: string;
+        properties: {
+            fontImageUrl: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            videoUrl: {
+                type: string;
+                maxLength: number;
+                description: string;
+                example: string;
+                nullable: boolean;
+            };
+            titulo: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            duracion: {
+                type: string;
+                minimum: number;
+                maximum: number;
+                description: string;
+                example: number;
+            };
+            albumId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
+            };
+        };
+    };
+    Album: {
+        type: string;
+        properties: {
+            id: {
+                type: string;
+                description: string;
+                example: number;
+            };
+            fontImageUrl: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+            };
+            titulo: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+            };
+            lanzamiento: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+            genero: {
+                type: string;
+                description: string;
+                maxLength: number;
+                example: string;
+            };
+            artistaId: {
+                type: string;
+                description: string;
+                example: number;
+            };
+        };
+    };
+    AlbumCreate: {
+        type: string;
+        required: string[];
+        properties: {
+            fontImageUrl: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            titulo: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            lanzamiento: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+            genero: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            artistaId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
+            };
+        };
+    };
+    AlbumUpdate: {
+        type: string;
+        properties: {
+            fontImageUrl: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            titulo: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            lanzamiento: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+            genero: {
+                type: string;
+                minLength: number;
+                maxLength: number;
+                description: string;
+                example: string;
+            };
+            artistaId: {
+                type: string;
+                minimum: number;
+                description: string;
                 example: number;
             };
         };
@@ -587,60 +824,45 @@ export declare const allSchemas: {
                 description: string;
                 example: number;
             };
-            usuarioId: {
+            nombre: {
                 type: string;
                 description: string;
-                example: number;
-            };
-            nombreArtistico: {
-                type: string;
-                description: string;
+                maxLength: number;
                 example: string;
             };
             genero: {
                 type: string;
                 description: string;
+                maxLength: number;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
                 description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
                 description: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                example: string;
             };
-            verificado: {
-                type: string;
-                description: string;
-                example: boolean;
-            };
-            createdAt: {
+            fechaDebut: {
                 type: string;
                 format: string;
                 description: string;
                 example: string;
             };
-            updatedAt: {
+            disquera: {
                 type: string;
-                format: string;
                 description: string;
                 example: string;
+                nullable: boolean;
+            };
+            usuarioId: {
+                type: string;
+                description: string;
+                example: number;
+                nullable: boolean;
             };
         };
     };
@@ -648,76 +870,98 @@ export declare const allSchemas: {
         type: string;
         required: string[];
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             genero: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
+                minLength: number;
+                description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                minLength: number;
+                description: string;
+                example: string;
+            };
+            fechaDebut: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+            disquera: {
+                type: string;
+                description: string;
+                example: string;
+            };
+            usuarioId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
             };
         };
     };
     ArtistaUpdate: {
         type: string;
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             genero: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
+                minLength: number;
+                description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                minLength: number;
+                description: string;
+                example: string;
             };
-            verificado: {
+            fechaDebut: {
                 type: string;
-                example: boolean;
+                format: string;
+                description: string;
+                example: string;
+            };
+            disquera: {
+                type: string;
+                description: string;
+                example: string;
+                nullable: boolean;
+            };
+            usuarioId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
+                nullable: boolean;
             };
         };
     };
@@ -1035,5 +1279,5 @@ export declare const allResponses: {
         };
     };
 };
-export { usuarioSchemas, eventoSchemas, artistaSchemas, artistaEventoSchemas, organizadorSchemas, boletoSchemas, ordenSchemas, commonSchemas, commonResponses, };
+export { usuarioSchemas, eventoSchemas, artistaSchemas, artistaEventoSchemas, organizadorSchemas, boletoSchemas, ordenSchemas, albumSchemas, songSchemas, commonSchemas, commonResponses, };
 //# sourceMappingURL=index.d.ts.map

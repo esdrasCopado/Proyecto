@@ -10,6 +10,8 @@ import { artistaEventoSchemas } from './artistaEvento.schema';
 import { organizadorSchemas } from './organizador.schema';
 import { boletoSchemas } from './boleto.shema';
 import { ordenSchemas } from './orden.schema';
+import { albumSchemas } from './album.schema';
+import { songSchemas } from './song.schema';
 import { commonSchemas, commonResponses } from './common.schema';
 
 // Combinar todos los schemas
@@ -21,6 +23,8 @@ export const allSchemas = {
     ...organizadorSchemas,
     ...boletoSchemas,
     ...ordenSchemas,
+    ...albumSchemas,
+    ...songSchemas,
     ...commonSchemas,
 };
 
@@ -36,6 +40,8 @@ export {
     organizadorSchemas,
     boletoSchemas,
     ordenSchemas,
+    albumSchemas,
+    songSchemas,
     commonSchemas,
     commonResponses,
 };

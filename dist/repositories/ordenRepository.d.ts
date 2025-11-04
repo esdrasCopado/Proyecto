@@ -37,6 +37,7 @@ export declare class OrdenRepository implements IOrdenRepository {
     getOrdenesByEstado(estado: EstadoOrden): Promise<IOrden[]>;
     /**
      * Asigna boletos a una orden
+     * Actualiza cada boleto con el ordenId, usuarioId y marca como no disponible
      */
     asignarBoletos(ordenId: number, boletoIds: number[]): Promise<IOrden>;
 }

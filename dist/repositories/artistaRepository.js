@@ -23,6 +23,7 @@ class ArtistaRepository {
                     paisOrigen: artista.paisOrigen,
                     fechaDebut: artista.fechaDebut,
                     disquera: artista.disquera,
+                    usuarioId: artista.usuarioId,
                 }
             });
             return Artista_1.Artista.fromDatabase(newArtista);

@@ -10,60 +10,45 @@ export declare const artistaSchemas: {
                 description: string;
                 example: number;
             };
-            usuarioId: {
+            nombre: {
                 type: string;
                 description: string;
-                example: number;
-            };
-            nombreArtistico: {
-                type: string;
-                description: string;
+                maxLength: number;
                 example: string;
             };
             genero: {
                 type: string;
                 description: string;
+                maxLength: number;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
                 description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
                 description: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                example: string;
             };
-            verificado: {
-                type: string;
-                description: string;
-                example: boolean;
-            };
-            createdAt: {
+            fechaDebut: {
                 type: string;
                 format: string;
                 description: string;
                 example: string;
             };
-            updatedAt: {
+            disquera: {
                 type: string;
-                format: string;
                 description: string;
                 example: string;
+                nullable: boolean;
+            };
+            usuarioId: {
+                type: string;
+                description: string;
+                example: number;
+                nullable: boolean;
             };
         };
     };
@@ -71,76 +56,98 @@ export declare const artistaSchemas: {
         type: string;
         required: string[];
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             genero: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
+                minLength: number;
+                description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                minLength: number;
+                description: string;
+                example: string;
+            };
+            fechaDebut: {
+                type: string;
+                format: string;
+                description: string;
+                example: string;
+            };
+            disquera: {
+                type: string;
+                description: string;
+                example: string;
+            };
+            usuarioId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
             };
         };
     };
     ArtistaUpdate: {
         type: string;
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
             genero: {
                 type: string;
                 minLength: number;
+                maxLength: number;
+                description: string;
                 example: string;
             };
-            biografia: {
+            contacto: {
                 type: string;
+                minLength: number;
+                description: string;
                 example: string;
             };
-            redesSociales: {
+            paisOrigen: {
                 type: string;
-                properties: {
-                    instagram: {
-                        type: string;
-                        example: string;
-                    };
-                    twitter: {
-                        type: string;
-                        example: string;
-                    };
-                    facebook: {
-                        type: string;
-                        example: string;
-                    };
-                };
+                minLength: number;
+                description: string;
+                example: string;
             };
-            verificado: {
+            fechaDebut: {
                 type: string;
-                example: boolean;
+                format: string;
+                description: string;
+                example: string;
+            };
+            disquera: {
+                type: string;
+                description: string;
+                example: string;
+                nullable: boolean;
+            };
+            usuarioId: {
+                type: string;
+                minimum: number;
+                description: string;
+                example: number;
+                nullable: boolean;
             };
         };
     };

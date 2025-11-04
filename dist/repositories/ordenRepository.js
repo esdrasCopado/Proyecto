@@ -221,9 +221,17 @@ class OrdenRepository {
     }
     /**
      * Asigna boletos a una orden
+     * Actualiza cada boleto con el ordenId, usuarioId y marca como no disponible
      */
     async asignarBoletos(ordenId, boletoIds) {
         try {
+            // Obtener la orden para conocer el usuarioId
+            const orden = await database_1.default.orden.findUnique({
+                where: { id: ordenId },
+            });
+            if (!orden) {
+                throw new Error('Orden no encontrada');
+            }
             // Validar que los boletos existen y están disponibles
             const boletos = await database_1.default.boleto.findMany({
                 where: { id: { in: boletoIds } },
@@ -235,20 +243,21 @@ class OrdenRepository {
             if (boletosNoDisponibles.length > 0) {
                 throw new Error('Algunos boletos no están disponibles o ya están asignados');
             }
-            // Asignar los boletos a la orden
+            // Asignar los boletos a la orden con usuarioId
             await database_1.default.boleto.updateMany({
                 where: { id: { in: boletoIds } },
                 data: {
                     ordenId,
+                    usuarioId: orden.usuarioId,
                     disponible: false,
                 },
             });
             // Obtener y retornar la orden actualizada
-            const orden = await this.getOrdenById(ordenId);
-            if (!orden) {
-                throw new Error('Orden no encontrada');
+            const ordenActualizada = await this.getOrdenById(ordenId);
+            if (!ordenActualizada) {
+                throw new Error('Error al obtener la orden actualizada');
             }
-            return orden;
+            return ordenActualizada;
         }
         catch (error) {
             throw error;

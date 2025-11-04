@@ -78,6 +78,7 @@ model Artista {
   usuarioId  Int?            @unique @map("usuario_id")
   usuario    Usuario?        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   eventos    ArtistaEvento[]
+  albums     Album[]
 
   @@map("artistas")
 }
@@ -168,4 +169,34 @@ model Orden {
   @@index([usuarioId])
   @@index([fecha])
   @@map("ordenes")
+}
+
+model Album {
+  id         Int      @id @default(autoincrement())
+  fontImageUrl String   @map("font_image_url")
+  titulo     String
+  lanzamiento DateTime
+  genero     String
+  artistaId  Int      @map("artista_id")
+
+  artista Artista @relation(fields: [artistaId], references: [id], onDelete: Cascade)
+
+  songs Song[]
+
+  @@index([artistaId])
+  @@map("albums")
+}
+
+model Song {
+  id       Int    @id @default(autoincrement())
+  fontImageUrl String   @map("font_image_url")
+  videoUrl String?   @map("video_url")
+  titulo   String
+  duracion Int    // duración en segundos
+  albumId  Int    @map("album_id")
+
+  album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@index([albumId])
+  @@map("songs")
 }

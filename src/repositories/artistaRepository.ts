@@ -19,6 +19,7 @@ export class ArtistaRepository implements IArtistaRepository {
                     paisOrigen: artista.paisOrigen,
                     fechaDebut: artista.fechaDebut,
                     disquera: artista.disquera,
+                    usuarioId: artista.usuarioId,
                 }
             });
             return Artista.fromDatabase(newArtista);

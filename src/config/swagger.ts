@@ -67,6 +67,14 @@ const options: swaggerJsdoc.Options = {
                 name: 'Organizadores',
                 description: 'Endpoints para gestión de organizadores',
             },
+            {
+                name: 'Albums',
+                description: 'Endpoints para gestión de álbumes musicales',
+            },
+            {
+                name: 'Songs',
+                description: 'Endpoints para gestión de canciones',
+            },
         ],
     },
     apis: [

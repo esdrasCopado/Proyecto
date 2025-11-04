@@ -188,7 +188,7 @@ router.get('/mis-ordenes', auth_middleware_1.authenticate, ordenController.obten
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  */
-router.get('/usuario/:usuarioId', auth_middleware_1.authenticate, authorize_middleware_1.adminOrOrganizer, ordenController.obtenerOrdenesPorUsuario);
+router.get('/usuario/:usuarioId', auth_middleware_1.authenticate, ordenController.obtenerOrdenesPorUsuario);
 /**
  * @swagger
  * /api/ordenes/estado/{estado}:

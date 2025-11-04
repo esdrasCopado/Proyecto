@@ -11,98 +11,95 @@ export const artistaSchemas = {
                 description: 'ID único del artista',
                 example: 1,
             },
-            usuarioId: {
-                type: 'integer',
-                description: 'ID del usuario asociado',
-                example: 5,
-            },
-            nombreArtistico: {
+            nombre: {
                 type: 'string',
-                description: 'Nombre artístico',
-                example: 'DJ Electro',
+                description: 'Nombre del artista',
+                maxLength: 200,
+                example: 'Los Ángeles Azules',
             },
             genero: {
                 type: 'string',
-                description: 'Género musical',
-                example: 'Electrónica',
+                description: 'Género musical del artista',
+                maxLength: 100,
+                example: 'Cumbia',
             },
-            biografia: {
+            contacto: {
                 type: 'string',
-                description: 'Biografía del artista',
-                example: 'Reconocido DJ internacional con más de 10 años de experiencia',
+                description: 'Información de contacto del artista',
+                example: 'contacto@losangelesazules.com',
             },
-            redesSociales: {
-                type: 'object',
-                description: 'Perfiles de redes sociales',
-                properties: {
-                    instagram: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    twitter: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    facebook: {
-                        type: 'string',
-                        example: 'djelectroofficial',
-                    },
-                },
+            paisOrigen: {
+                type: 'string',
+                description: 'País de origen del artista',
+                example: 'México',
             },
-            verificado: {
-                type: 'boolean',
-                description: 'Indica si el artista está verificado',
-                example: true,
-            },
-            createdAt: {
+            fechaDebut: {
                 type: 'string',
                 format: 'date-time',
-                description: 'Fecha de creación',
-                example: '2025-01-15T10:30:00Z',
+                description: 'Fecha de debut del artista',
+                example: '1980-01-15T00:00:00.000Z',
             },
-            updatedAt: {
+            disquera: {
                 type: 'string',
-                format: 'date-time',
-                description: 'Fecha de última actualización',
-                example: '2025-01-20T15:45:00Z',
+                description: 'Nombre de la disquera (opcional)',
+                example: 'Sony Music',
+                nullable: true,
+            },
+            usuarioId: {
+                type: 'integer',
+                description: 'ID del usuario asociado al artista (opcional)',
+                example: 5,
+                nullable: true,
             },
         },
     },
 
     ArtistaCreate: {
         type: 'object',
-        required: ['nombreArtistico', 'genero'],
+        required: ['nombre', 'genero', 'contacto', 'paisOrigen', 'fechaDebut'],
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: 'string',
-                minLength: 2,
-                example: 'DJ Electro',
+                minLength: 1,
+                maxLength: 200,
+                description: 'Nombre del artista',
+                example: 'Los Ángeles Azules',
             },
             genero: {
                 type: 'string',
-                minLength: 2,
-                example: 'Electrónica',
+                minLength: 1,
+                maxLength: 100,
+                description: 'Género musical del artista',
+                example: 'Cumbia',
             },
-            biografia: {
+            contacto: {
                 type: 'string',
-                example: 'Reconocido DJ internacional con más de 10 años de experiencia',
+                minLength: 1,
+                description: 'Información de contacto del artista',
+                example: 'contacto@losangelesazules.com',
             },
-            redesSociales: {
-                type: 'object',
-                properties: {
-                    instagram: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    twitter: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    facebook: {
-                        type: 'string',
-                        example: 'djelectroofficial',
-                    },
-                },
+            paisOrigen: {
+                type: 'string',
+                minLength: 1,
+                description: 'País de origen del artista',
+                example: 'México',
+            },
+            fechaDebut: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Fecha de debut del artista',
+                example: '1980-01-15T00:00:00.000Z',
+            },
+            disquera: {
+                type: 'string',
+                description: 'Nombre de la disquera (opcional)',
+                example: 'Sony Music',
+            },
+            usuarioId: {
+                type: 'integer',
+                minimum: 1,
+                description: 'ID del usuario asociado al artista (opcional)',
+                example: 5,
             },
         },
     },
@@ -110,40 +107,50 @@ export const artistaSchemas = {
     ArtistaUpdate: {
         type: 'object',
         properties: {
-            nombreArtistico: {
+            nombre: {
                 type: 'string',
-                minLength: 2,
-                example: 'DJ Electro',
+                minLength: 1,
+                maxLength: 200,
+                description: 'Nombre del artista',
+                example: 'Los Ángeles Azules',
             },
             genero: {
                 type: 'string',
-                minLength: 2,
-                example: 'Electrónica',
+                minLength: 1,
+                maxLength: 100,
+                description: 'Género musical del artista',
+                example: 'Cumbia Sonidera',
             },
-            biografia: {
+            contacto: {
                 type: 'string',
-                example: 'Reconocido DJ internacional con más de 10 años de experiencia',
+                minLength: 1,
+                description: 'Información de contacto del artista',
+                example: 'nuevo.contacto@losangelesazules.com',
             },
-            redesSociales: {
-                type: 'object',
-                properties: {
-                    instagram: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    twitter: {
-                        type: 'string',
-                        example: '@djelectro',
-                    },
-                    facebook: {
-                        type: 'string',
-                        example: 'djelectroofficial',
-                    },
-                },
+            paisOrigen: {
+                type: 'string',
+                minLength: 1,
+                description: 'País de origen del artista',
+                example: 'México',
             },
-            verificado: {
-                type: 'boolean',
-                example: true,
+            fechaDebut: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Fecha de debut del artista',
+                example: '1980-01-15T00:00:00.000Z',
+            },
+            disquera: {
+                type: 'string',
+                description: 'Nombre de la disquera (opcional, null para eliminar)',
+                example: 'Universal Music',
+                nullable: true,
+            },
+            usuarioId: {
+                type: 'integer',
+                minimum: 1,
+                description: 'ID del usuario asociado al artista (opcional, null para desasociar)',
+                example: 7,
+                nullable: true,
             },
         },
     },
